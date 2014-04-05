@@ -1,0 +1,19 @@
+<%- model_class = Learnable -%>
+<div class="page-header">
+  <h1>Wörter und Wendungen</h1>
+</div>
+
+<dl>
+  <dt>Durchnittliche Bewertung</dt>
+  <dd><%= average_rating %></dd>
+  <dt>Nächste Frage wird vorgelegt am</dt>
+  <dd><%= l next_review %></dd>
+  <dt>Anzahl der Wörter</dt>
+  <dd><%= @word_count %></dd>
+  <dt>Anzahl der Wendungen</dt>
+  <dd><%= @phrase_count %></dd>
+  <dt>Fragen innerhalb der nächsten 24 Stunden</dt>
+  <dd><%= @questions_for_the_next_24_hours %></dd>
+  <dt>Fragen innerhalb der nächsten 48 Stunden</dt>
+  <dd><%= @questions_for_the_next_48_hours %></dd>
+</dl>

@@ -1,0 +1,35 @@
+de:
+  activerecord:
+    models:
+      learnable: Eintrag
+      word: Wort
+      phrase: Wendung
+    attributes:
+      learnable:
+        lemma: Lemma
+        long_lemma: Lemma (Langform)
+        phrase: Wendung
+        translation: Übersetzung
+        repetition: Wiederholung
+        interval: Intervall
+        next_review: nächste Vorlage
+        e_factor: Leichtigkeit (E-Faktor)
+        rating: Bewertung
+        created_at: angelegt am
+  helpers:
+    actions: Aktionen
+    links:
+      back: Zurück
+      cancel: Abbrechen
+      destroy: Löschen
+      edit: Bearbeiten
+      new: Neu
+      confirm: Sind Sie sicher?
+    titles:
+      edit: "%{model} bearbeiten"
+  simple_form:
+    required:
+      text: erforderlich
+      mark: '*'
+    error_notification:
+      default_message: 'Bitte überprüfen Sie Ihre Eingaben:'

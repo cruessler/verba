@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+DEFAULTS: &DEFAULTS
+  repetition: 1
+  next_review: <%= Time.now %>
+  e_factor: 2.5
+  rating: 0
+
+word:
+  type: Word
+  lemma: ab
+  long_lemma: ab, abs, ā + Abl.
+  translation: von, von … weg, von … her
+  <<: *DEFAULTS
+
+phrase:
+  type: Phrase
+  lemma: ab
+  phrase: ab urbe
+  translation: von der Stadt aus, – – – her
+  <<: *DEFAULTS

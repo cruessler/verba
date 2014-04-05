@@ -1,0 +1,39 @@
+<div id="question">
+  <% unless learnable.nil? %>
+    <div>
+      <span class="lead"><%= learnable.question %></span>
+      <%= link_to 'Lösung zeigen', '#', { id: 'show-solution', class: 'btn btn-default pull-right' } %>
+    </div>
+
+    <div id="solution" class="hide fade solution">
+      <% if learnable.is_a? Word %>
+        <%= learnable.long_lemma %><br />
+      <% end %>
+      <%= learnable.translation %>
+
+      <div class="row rating">
+        <div class="col-md-6">
+          <span class="lead">Bewerten</span>
+        </div>
+        <div class="col-md-6">
+          <%= form_for(learnable, url: rate_learnable_path(learnable), remote: true) do |f| %>
+            <%= hidden_field_tag 'rating' %>
+            <% [ 5, 4, 3, 2, 1, 0 ].each do |n| %>
+              <%= rate_link n %>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    
+    <dl class="question-info">
+      <dt>Fragen verbleibend</dt>
+      <dd><%= questions_left_for_today %></dd>
+      <dt>Mit Bewertung &lt; 4</dt>
+      <dd><%= questions_left_with_bad_rating %></dd>
+    </dl>
+  <% else %>
+    <p class="alert alert-info">Heute nichts mehr zu lernen.<br />
+      Die nächste Vokabel wird <%= l next_review %> vorgelegt.</p>
+  <% end %>
+</div>
