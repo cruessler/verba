@@ -15,13 +15,17 @@ class LearnablesController < ApplicationController
   # GET /learnables/learn.js
   def learn
     @learnable = Learnable.next_for_review
+    @token = session[:token] = SecureRandom.urlsafe_base64(16)
   end
   
   # PATCH /learnables/rate
   def rate
-    rating = params[:rating].to_i
-    @learnable.recalc_e_factor!(rating)
-    @learnable.save
+    if session[:token] == params[:token]
+      session[:token] = nil
+      rating = params[:rating].to_i
+      @learnable.recalc_e_factor!(rating)
+      @learnable.save
+    end
 
     redirect_to action: 'learn'
   end

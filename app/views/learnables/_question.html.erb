@@ -18,6 +18,7 @@
         <div class="col-md-6">
           <%= form_for(learnable, url: rate_learnable_path(learnable), remote: true) do |f| %>
             <%= hidden_field_tag 'rating' %>
+            <%= hidden_field_tag 'token', @token %>
             <% [ 5, 4, 3, 2, 1, 0 ].each do |n| %>
               <%= rate_link n %>
             <% end %>

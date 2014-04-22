@@ -2,7 +2,8 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
-rateAnswer = (rating) ->
+rateAnswer = (rating, token) ->
+  $('#token').val(token)
   ratingField = $('#rating')
   ratingField.val(rating)
   ratingField.closest('form').submit()
@@ -25,7 +26,7 @@ rateAnswer = (rating) ->
   $('.rate-link').on 'click', (event) ->
     event.preventDefault()
 
-    rateAnswer($(this).data('rating'))
+    rateAnswer($(this).data('rating'), $(this).data('token'))
 
 $ ->
   initClickHandlers()
