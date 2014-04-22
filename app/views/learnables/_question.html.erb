@@ -1,7 +1,7 @@
 <div id="question">
   <% unless learnable.nil? %>
     <div>
-      <span class="lead"><%= learnable.question %></span>
+      <span class="h4"><%= learnable.question %></span>
       <%= link_to 'Lösung zeigen', '#', { id: 'show-solution', class: 'btn btn-default pull-right' } %>
     </div>
 
@@ -13,7 +13,7 @@
 
       <div class="row rating">
         <div class="col-md-6">
-          <span class="lead">Bewerten</span>
+          <span class="h4">Bewerten</span>
         </div>
         <div class="col-md-6">
           <%= form_for(learnable, url: rate_learnable_path(learnable), remote: true) do |f| %>
@@ -33,7 +33,7 @@
       <dd><%= questions_left_with_bad_rating %></dd>
     </dl>
   <% else %>
-    <p class="alert alert-info">Heute nichts mehr zu lernen.<br />
-      Die nächste Vokabel wird <%= l next_review %> vorgelegt.</p>
+    <p class="alert alert-info">Im Augenblick gibt es nichts mehr zu lernen.<br />
+       Die nächste Frage wird <%= l next_review %> vorgelegt.</p>
   <% end %>
 </div>
