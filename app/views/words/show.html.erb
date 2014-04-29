@@ -17,7 +17,7 @@
   <dt><strong><%= model_class.human_attribute_name(:next_review) %>:</strong></dt>
   <dd><%= l @word.next_review %></dd>
   <dt><strong><%= model_class.human_attribute_name(:e_factor) %>:</strong></dt>
-  <dd><%= @word.e_factor %></dd>
+  <dd><%= @word.e_factor.round(2) %></dd>
   <dt><strong><%= model_class.human_attribute_name(:rating) %>:</strong></dt>
   <dd><%= @word.rating %></dd>
 </dl>
