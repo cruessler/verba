@@ -1,8 +1,11 @@
 require 'test_helper'
 
 class PhrasesControllerTest < ActionController::TestCase
+  include Devise::TestHelpers
+
   setup do
     @phrase = learnables(:phrase)
+    sign_in users(:one)
   end
 
   test "should get index" do

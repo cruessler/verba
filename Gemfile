@@ -59,3 +59,13 @@ gem 'rails-i18n', '~> 4.0.0.pre' # For 4.0.x
 # https://github.com/rafaelfranca/simple_form-bootstrap/pull/28
 # Be sure to go back to using the gem as soon as appropriate
 gem 'simple_form', '~> 3.0.0', git: 'git://github.com/plataformatec/simple_form.git'
+
+# https://github.com/plataformatec/devise
+# http://railscasts.com/episodes/209-introducing-devise
+# Used for authentication and access control
+gem 'devise'
+
+# https://github.com/tigrish/devise-i18n
+# https://github.com/plataformatec/devise/wiki/I18n
+# Used for l18n of devise
+gem 'devise-i18n'

@@ -1,8 +1,11 @@
 require 'test_helper'
 
 class LearnablesControllerTest < ActionController::TestCase
+  include Devise::TestHelpers
+
   setup do
     @learnable = learnables(:word)
+    sign_in users(:one)
   end
 
   test "should get learn" do

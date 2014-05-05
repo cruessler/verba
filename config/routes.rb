@@ -1,4 +1,6 @@
 Verba::Application.routes.draw do
+  devise_for :users
+
   root 'learnables#overview'
   
   resources :learnables, only: [] do

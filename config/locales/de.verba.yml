@@ -4,6 +4,7 @@ de:
       learnable: Eintrag
       word: Wort
       phrase: Wendung
+      user: Nutzer
     attributes:
       learnable:
         lemma: Lemma
@@ -16,6 +17,13 @@ de:
         e_factor: Leichtigkeit (E-Faktor)
         rating: Bewertung
         created_at: angelegt am
+      user:
+        email: E-Mail-Adresse
+        password: Passwort
+        remember_me: Angemeldet bleiben
+        password_confirmation: Passwort bestätigen
+        current_password: Aktuelles Passwort
+        reset_password_token: Rücksetzungsschlüssel
   helpers:
     actions: Aktionen
     links:
