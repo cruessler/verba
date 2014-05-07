@@ -1,0 +1,16 @@
+<%- model_class = Rating -%>
+
+<h3>Wertung</h3>
+
+<dl class="dl-horizontal">
+  <dt><strong><%= model_class.human_attribute_name(:repetition) %>:</strong></dt>
+  <dd><%= rating.repetition %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:interval) %>:</strong></dt>
+  <dd class="clearfix"><%= rating.interval %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:next_review) %>:</strong></dt>
+  <dd><%= l rating.next_review %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:e_factor) %>:</strong></dt>
+  <dd><%= rating.e_factor.round(2) %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:rating) %>:</strong></dt>
+  <dd><%= rating.rating %></dd>
+</dl>

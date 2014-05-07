@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140504114911) do
+ActiveRecord::Schema.define(version: 20140505183612) do
 
   create_table "learnables", force: true do |t|
     t.string   "type"
@@ -19,6 +19,15 @@ ActiveRecord::Schema.define(version: 20140504114911) do
     t.string   "long_lemma"
     t.string   "phrase"
     t.string   "translation"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "learnables", ["lemma"], name: "index_learnables_on_lemma"
+
+  create_table "ratings", force: true do |t|
+    t.integer  "learnable_id"
+    t.integer  "user_id"
     t.integer  "repetition"
     t.integer  "interval"
     t.datetime "next_review"
@@ -28,9 +37,10 @@ ActiveRecord::Schema.define(version: 20140504114911) do
     t.datetime "updated_at"
   end
 
-  add_index "learnables", ["lemma"], name: "index_learnables_on_lemma"
-  add_index "learnables", ["next_review"], name: "index_learnables_on_next_review"
-  add_index "learnables", ["rating"], name: "index_learnables_on_rating"
+  add_index "ratings", ["learnable_id"], name: "index_ratings_on_learnable_id"
+  add_index "ratings", ["next_review"], name: "index_ratings_on_next_review"
+  add_index "ratings", ["rating"], name: "index_ratings_on_rating"
+  add_index "ratings", ["user_id"], name: "index_ratings_on_user_id"
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false

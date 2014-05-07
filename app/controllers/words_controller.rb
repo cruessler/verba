@@ -10,6 +10,7 @@ class WordsController < ApplicationController
   # GET /words/1
   # GET /words/1.json
   def show
+    @rating = Rating.where(learnable: @word, user: current_user).first
   end
 
   # GET /words/new

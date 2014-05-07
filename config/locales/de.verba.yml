@@ -11,12 +11,12 @@ de:
         long_lemma: Lemma (Langform)
         phrase: Wendung
         translation: Übersetzung
+      rating:
         repetition: Wiederholung
         interval: Intervall
         next_review: nächste Vorlage
         e_factor: Leichtigkeit (E-Faktor)
         rating: Bewertung
-        created_at: angelegt am
       user:
         email: E-Mail-Adresse
         password: Passwort

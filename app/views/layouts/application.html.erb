@@ -33,7 +33,7 @@
             <li><%= link_to 'Übersicht', root_url %></li>
             <li><%= link_to 'Wörter', Word %></li>
             <li><%= link_to 'Wendungen', Phrase %></li>
-            <li><%= link_to 'Lernen', polymorphic_url(Learnable, action: 'learn') %></li>
+            <li><%= link_to 'Lernen', polymorphic_url(Rating, action: 'review') %></li>
           </ul>
           
           <p class="navbar-text navbar-right">

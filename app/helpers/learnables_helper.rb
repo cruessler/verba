@@ -4,18 +4,18 @@ module LearnablesHelper
   end
   
   def questions_left_for_today
-    Learnable.scheduled_for_review.count
+    current_user.ratings.scheduled_for_review.count
   end
   
   def questions_left_with_bad_rating
-    Learnable.with_bad_rating.count
+    current_user.ratings.with_bad_rating.count
   end
   
   def average_rating
-    Learnable.average('rating').round(2)
+    (current_user.ratings.average('rating') || 0).round(2)
   end
   
   def next_review
-    Learnable.minimum('next_review').in_time_zone
+    (current_user.ratings.minimum('next_review') || Time.now).in_time_zone
   end
 end

@@ -16,7 +16,7 @@
           <span class="h4">Bewerten</span>
         </div>
         <div class="col-md-6">
-          <%= form_for(learnable, url: rate_learnable_path(learnable), remote: true) do |f| %>
+          <%= form_for(rating, url: rating_path(rating), remote: true) do |f| %>
             <%= hidden_field_tag 'rating' %>
             <%= hidden_field_tag 'token', @token %>
             <% [ 5, 4, 3, 2, 1, 0 ].each do |n| %>
@@ -29,9 +29,9 @@
     
     <dl class="question-info">
       <dt>Fragen verbleibend</dt>
-      <dd><%= questions_left_for_today %></dd>
+      <dd><%= current_user.learnables.not_yet_rated.count + questions_left_for_today - 1 %></dd>
       <dt>Mit Bewertung &lt; 4</dt>
-      <dd><%= questions_left_with_bad_rating %></dd>
+      <dd><%= questions_left_with_bad_rating - 1 %></dd>
     </dl>
   <% else %>
     <p class="alert alert-info">Im Augenblick gibt es nichts mehr zu lernen.<br />

@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+DEFAULTS: &DEFAULTS
+  repetition: 1
+  next_review: <%= Time.now %>
+  e_factor: 2.5
+  rating: 0
+
+one:
+  user: one
+  learnable: word
+  <<: *DEFAULTS
+
+two:
+  user: one
+  learnable: phrase
+  <<: *DEFAULTS
