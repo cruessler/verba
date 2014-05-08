@@ -18,7 +18,7 @@ class User < ActiveRecord::Base
     end
     
     def scheduled_for_review
-      where([ "next_review < ?", Time.now ])
+      where([ "rating >= 4 AND next_review < ?", Time.now ])
     end
     
     def next_scheduled_for_review
