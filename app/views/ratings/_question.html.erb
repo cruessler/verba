@@ -1,8 +1,10 @@
 <div id="question">
   <% unless learnable.nil? %>
-    <div>
-      <span class="h4"><%= learnable.question %></span>
-      <%= link_to 'Lösung zeigen', '#', { id: 'show-solution', class: 'btn btn-default pull-right' } %>
+    <div class="row">
+      <div class="col-md-12">
+        <span class="h4"><%= learnable.question %></span>
+        <%= link_to 'Lösung zeigen', '#', { id: 'show-solution', class: 'btn btn-default pull-right' } %>
+      </div>
     </div>
 
     <div id="solution" class="hide fade solution">
