@@ -14,7 +14,8 @@ class RatingsController < ApplicationController
   # GET /ratings/review
   # GET /ratings/review.js
   def review
-    @rating = current_user.ratings.next_for_review
+    @learnable = current_user.rated_learnables.next_for_review
+    @rating = @learnable.rating_for(current_user)
     @token = session[:token] = SecureRandom.urlsafe_base64(16)
   end
   

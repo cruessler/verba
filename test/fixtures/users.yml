@@ -6,6 +6,8 @@
 #
 one:
   email: jane.doe@gmail.com
+  current_vocabulary: one
 
 two:
   email: john.doe@gmail.com
+  current_vocabulary: one

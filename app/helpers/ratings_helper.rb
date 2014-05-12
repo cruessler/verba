@@ -4,11 +4,11 @@ module RatingsHelper
   end
   
   def questions_left_for_today
-    current_user.ratings.scheduled_for_review.count
+    current_user.rated_learnables.scheduled_for_review.count
   end
   
   def questions_left_with_bad_rating
-    current_user.ratings.with_bad_rating.count
+    current_user.rated_learnables.with_bad_rating.count
   end
   
   def average_rating
