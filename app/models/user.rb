@@ -50,4 +50,8 @@ class User < ActiveRecord::Base
         where('ratings.user_id IS NULL')
     end
   end
+  
+  def questions_for_the_next timespan
+    rated_learnables.where([ 'next_review < ?', Time.now + timespan ]).count
+  end
 end
