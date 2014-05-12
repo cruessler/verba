@@ -31,9 +31,9 @@
     
     <dl class="question-info">
       <dt>Fragen verbleibend</dt>
-      <dd><%= current_user.learnables.not_yet_rated.count + questions_left_for_today - 1 %></dd>
+      <dd><%= [ current_user.learnables.not_yet_rated.count + questions_left_for_today - 1, 0 ].max %></dd>
       <dt>Mit Bewertung &lt; 4</dt>
-      <dd><%= questions_left_with_bad_rating - (rating.rating < 4 ? 1 : 0) %></dd>
+      <dd><%= [ questions_left_with_bad_rating - 1, 0 ].max %></dd>
     </dl>
   <% else %>
     <p class="alert alert-info">Im Augenblick gibt es nichts mehr zu lernen.<br />
