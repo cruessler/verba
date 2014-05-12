@@ -11,20 +11,22 @@ namespace :verba do
         
         lemma = ''
 
-        File.new(filename).each do |line|
-          columns = line.split "\t"
-          lemma = columns[0] unless columns[0].empty?
-          
-          next unless columns.length == 3
-          
-          print '.'
+        Learnable.transaction do
+          File.new(filename).each do |line|
+            columns = line.split "\t"
+            lemma = columns[0] unless columns[0].empty?
+            
+            next unless columns.length == 3
+            
+            print '.'
 
-          if columns[0].empty?
-            Phrase.create_with(translation: columns[2]).
-              find_or_create_by(lemma: lemma, phrase: columns[1])
-          else
-            Word.create_with(translation: columns[2]).
-              find_or_create_by(lemma: lemma, long_lemma: columns[1])
+            if columns[0].empty?
+              Phrase.create_with(translation: columns[2]).
+                find_or_create_by(lemma: lemma, phrase: columns[1])
+            else
+              Word.create_with(translation: columns[2]).
+                find_or_create_by(lemma: lemma, long_lemma: columns[1])
+            end
           end
         end
         
