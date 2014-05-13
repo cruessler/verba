@@ -7,7 +7,10 @@ gem 'rails', '~> 4.0.0'
 gem 'sqlite3'
 
 # Use SCSS for stylesheets
-gem 'sass-rails', '~> 4.0.0'
+# Depending on at least 4.0.2 to work around a bug that prevents assets
+# from being precompiled.
+# See https://github.com/rails/sass-rails/issues/191
+gem 'sass-rails', '~> 4.0.2'
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
@@ -55,10 +58,7 @@ end
 gem 'rails-i18n', '~> 4.0.0.pre' # For 4.0.x
 
 # https://github.com/plataformatec/simple_form
-# Support for Bootstrap 3 available since April 2014
-# https://github.com/rafaelfranca/simple_form-bootstrap/pull/28
-# Be sure to go back to using the gem as soon as appropriate
-gem 'simple_form', '~> 3.0.0', git: 'git://github.com/plataformatec/simple_form.git'
+gem 'simple_form', '~> 3.0.0'
 
 # https://github.com/plataformatec/devise
 # http://railscasts.com/episodes/209-introducing-devise
