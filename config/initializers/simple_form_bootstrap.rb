@@ -1,7 +1,8 @@
 # Use this setup block to configure all options available in SimpleForm.
 SimpleForm.setup do |config|
   config.button_class = 'btn btn-default'
-  config.boolean_label_class = nil
+  # This option is only available in simple_form >= 3.1.0.
+  # config.boolean_label_class = nil
 
   config.wrappers :vertical_form, tag: 'div', class: 'form-group', error_class: 'has-error' do |b|
     b.use :html5
