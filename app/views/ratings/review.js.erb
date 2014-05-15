@@ -1,4 +1,4 @@
 $("#question").replaceWith('<%= escape_javascript render(
-   partial: 'question', locals: { rating: @rating, learnable: @rating.learnable }) %>');
+   partial: 'question', locals: { rating: @rating, learnable: @learnable }) %>');
 
 initClickHandlers();
