@@ -1,3 +1,12 @@
+GIT
+  remote: https://github.com/plataformatec/simple_form.git
+  revision: 54f65889f87f85ddcdb53524a4bb1e3eb7a5a2b4
+  tag: v3.1.0.rc1
+  specs:
+    simple_form (3.1.0.rc1)
+      actionpack (~> 4.0)
+      activemodel (~> 4.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -99,9 +108,6 @@ GEM
     sdoc (0.4.0)
       json (~> 1.8)
       rdoc (~> 4.0, < 5.0)
-    simple_form (3.0.2)
-      actionpack (~> 4.0)
-      activemodel (~> 4.0)
     sprockets (2.11.0)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -152,7 +158,7 @@ DEPENDENCIES
   rails-i18n (~> 4.0.0.pre)
   sass-rails (~> 4.0.2)
   sdoc
-  simple_form (~> 3.0.0)
+  simple_form!
   sqlite3
   therubyracer
   thin
