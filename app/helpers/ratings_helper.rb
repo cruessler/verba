@@ -16,6 +16,12 @@ module RatingsHelper
   end
   
   def next_review
-    (current_user.ratings.minimum('next_review') || Time.now).in_time_zone
+    next_review = current_user.learnables.includes(:ratings).minimum('next_review').try(:in_time_zone)
+
+    if next_review
+      l next_review
+    else
+      'nie'
+    end
   end
 end
