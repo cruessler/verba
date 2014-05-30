@@ -51,6 +51,12 @@ class User < ActiveRecord::Base
     end
   end
   
+  after_initialize :set_default_values
+  
+  def set_default_values
+    self.current_vocabulary = Vocabulary.first if current_vocabulary.nil?
+  end
+  
   def questions_for_the_next timespan
     rated_learnables.where([ 'next_review < ?', Time.now + timespan ]).count
   end

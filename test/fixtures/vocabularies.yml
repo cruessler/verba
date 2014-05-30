@@ -3,3 +3,7 @@
 one:
   name: 'A vocabulary'
   learnables: word, phrase
+
+two:
+  name: 'A second vocabulary'
+  learnables: phrase

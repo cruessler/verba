@@ -10,5 +10,7 @@ class LearnablesControllerTest < ActionController::TestCase
     sign_in users(:one)
     get :overview
     assert_response :success
+
+    assert_select '#dropdown-vocabularies', Regexp.new(assigns(:current_user).current_vocabulary.try(:name))
   end
 end

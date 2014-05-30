@@ -31,11 +31,23 @@
         </div>
 
         <div class="collapse navbar-collapse" id="navbar-collapse-1">
-          <p class="navbar-text">
-            Wortschatz: <%= current_vocabulary %>
-          </p>
- 
           <ul class="nav navbar-nav">
+            <% if user_signed_in? %>
+              <li class="dropdown">
+                <a id="dropdown-vocabularies" role="button" data-toggle="dropdown" data-target="#" href="<%= root_url %>">
+                  Wortschatz: <%= current_vocabulary %> <span class="caret"></span>
+                </a>
+
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown-vocabularies">
+                  <li><a href="#">Verfügbare Wortschätze (klicken zum Auswählen)</a></li>
+                  <li class="divider"></li>
+                  <% Vocabulary.all.each do |v| %>
+                    <li><%= link_to v.name, polymorphic_url(v, action: 'select') %></li>
+                  <% end %>
+                </ul>
+              </li>
+            <% end %>          
+          
             <li><%= link_to 'Übersicht', root_url %></li>
             <li><%= link_to 'Wörter', Word %></li>
             <li><%= link_to 'Wendungen', Phrase %></li>

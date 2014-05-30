@@ -24,6 +24,12 @@ de:
         password_confirmation: Passwort bestätigen
         current_password: Aktuelles Passwort
         reset_password_token: Rücksetzungsschlüssel
+  word:
+    one: ein Wort
+    other: '%{count} Wörter'
+  phrase:
+    one: eine Wendung
+    other: '%{count} Wendungen'
   helpers:
     actions: Aktionen
     links:

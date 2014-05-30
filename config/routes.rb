@@ -8,6 +8,12 @@ Verba::Application.routes.draw do
       get 'review'
     end
   end
+  
+  resources :vocabularies, only: [] do
+    member do
+      get 'select'
+    end
+  end
 
   resources :words
   resources :phrases
