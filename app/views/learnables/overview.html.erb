@@ -3,15 +3,26 @@
   <h1>Wörter und Wendungen</h1>
 </div>
 
+<h3>
+  Für den Wortschatz <%= current_vocabulary_name %>
+</h3>
+
+<dl>
+  <dt>Nächste Frage wird vorgelegt am</dt>
+  <dd><%= next_review %></dd>
+  <dt>Anzahl der Wörter</dt>
+  <dd><%= current_word_count %></dd>
+  <dt>Anzahl der Wendungen</dt>
+  <dd><%= current_phrase_count %></dd>
+</dl>
+
+<h3>
+  Für alle Wortschätze
+</h3>
+
 <dl>
   <dt>Durchnittliche Bewertung</dt>
   <dd><%= average_rating %></dd>
-  <dt>Nächste Frage wird vorgelegt am</dt>
-  <dd><%= l next_review %></dd>
-  <dt>Anzahl der Wörter</dt>
-  <dd><%= @word_count %></dd>
-  <dt>Anzahl der Wendungen</dt>
-  <dd><%= @phrase_count %></dd>
   <dt>offene Fragen</dt>
   <dd><%= @questions_for_now %></dd>
   <dt>offene Fragen innerhalb der nächsten 24 Stunden</dt>
