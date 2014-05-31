@@ -7,30 +7,11 @@ namespace :verba do
       print "Loading words and phrases …\n\n"
 
       FileList['words/*.words'].each do |filename|
-        print "> #{filename}:\n"
-        
-        lemma = ''
+        print "> #{filename}: "
 
-        Learnable.transaction do
-          File.new(filename).each do |line|
-            columns = line.split "\t"
-            lemma = columns[0] unless columns[0].empty?
-            
-            next unless columns.length == 3
-            
-            print '.'
+        imported_items = Vocabulary.import File.new(filename)
 
-            if columns[0].empty?
-              Phrase.create_with(translation: columns[2]).
-                find_or_create_by(lemma: lemma, phrase: columns[1])
-            else
-              Word.create_with(translation: columns[2]).
-                find_or_create_by(lemma: lemma, long_lemma: columns[1])
-            end
-          end
-        end
-        
-        print "\n"
+        print "#{imported_items} words and phrases imported\n"
       end
     end
   end
