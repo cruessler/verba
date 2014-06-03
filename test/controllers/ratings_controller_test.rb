@@ -3,6 +3,8 @@ require 'test_helper'
 class RatingsControllerTest < ActionController::TestCase
   include Devise::TestHelpers
 
+  self.use_transactional_fixtures = true
+
   setup do
     @rating = ratings(:one)
     sign_in users(:one)
@@ -14,6 +16,18 @@ class RatingsControllerTest < ActionController::TestCase
     
     get :review, format: :js
     assert_response :success
+  end
+
+  test "should get review if no question is left" do
+    Rating.all.each do |r|
+      r.next_review = Time.now + 1.day
+      r.rating = 5
+      r.save
+    end
+
+    get :review
+    assert_response :success
+    assert_select 'p.alert-info'
   end
   
   test "should rate learnable" do
