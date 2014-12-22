@@ -18,6 +18,9 @@
 # Ignore all files managed by bower.
 /vendor/assets/components/*
 
+# Ignore all precompiled assets.
+/public/assets/*
+
 # Ignore word lists.
 /words/*
 
