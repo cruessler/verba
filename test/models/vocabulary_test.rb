@@ -6,9 +6,9 @@ class VocabularyTest < ActiveSupport::TestCase
 
     imported_items = Vocabulary.import test_file
     assert_equal 3, imported_items
-    
+
     vocabulary = Vocabulary.find_by name: 'Lateinische Vokabeln'
-    
+
     assert_not_nil vocabulary
     assert_equal 3, vocabulary.learnables.count
     assert_equal 1, vocabulary.words.count
