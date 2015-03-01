@@ -19,12 +19,5 @@ module Verba
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     config.i18n.default_locale = :de
-
-    config.assets.paths << Rails.root.join('vendor', 'assets', 'components')
-    config.assets.paths << Rails.root.join('vendor', 'assets', 'fonts')
-    # Bootstrap uses depend_on_asset in _glyphicons.scss which does not respect $icon-font-path.
-    # Thus the font directory of bootstrap has to be added to the asset search paths.
-    # https://github.com/twbs/bootstrap-sass/issues/592#issuecomment-46108968
-    config.assets.paths << Rails.root.join('vendor', 'assets', 'components', 'bootstrap-sass-official', 'vendor', 'assets', 'fonts')
   end
 end
