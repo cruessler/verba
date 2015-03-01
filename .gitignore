@@ -24,5 +24,15 @@
 # Ignore word lists.
 /words/*
 
-# Ignore production config.
+# Ignore config files containing non-public information.
+/config/secrets.yml
 /config/environments/production.rb
+/config/initializers/devise.rb
+/config/deploy.rb
+/config/deploy/production.rb
+
+# Ignore capistrano’s metrics.
+/.capistrano
+
+# Ignore capistrano tasks specific to a certain server.
+/lib/capistrano/tasks/copy_assets_to_public_dir.rake
