@@ -6,15 +6,15 @@ class Vocabulary < ActiveRecord::Base
   def self.import file
     first_line = file.readline
     vocabulary_name = 'Neuer Wortschatz'
-    
+
     if match = first_line.match(/# vocabulary: (.*)/)
       vocabulary_name = match[1]
     else
       file.rewind
     end
-    
+
     vocabulary = Vocabulary.find_or_create_by name: vocabulary_name
-    
+
     lemma = ''
     imported_items = 0
 
@@ -37,12 +37,12 @@ class Vocabulary < ActiveRecord::Base
             Word.find_or_create_by(lemma: lemma, long_lemma: columns[1], translation: columns[2])
         end
 
-        learnable.vocabularies << vocabulary unless learnable.vocabularies.exists?(vocabulary)
+        learnable.vocabularies << vocabulary unless learnable.vocabularies.exists?(vocabulary.id)
       end
-      
+
       imported_items = vocabulary.learnables.count - item_count_before
     end
-    
+
     imported_items
   end
 end
