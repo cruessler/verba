@@ -24,5 +24,4 @@
 //= require bootstrap-sass-official/vendor/assets/javascripts/bootstrap/tooltip
 //= require bootstrap-sass-official/vendor/assets/javascripts/bootstrap/popover
 //= require jquery-ujs
-//= require turbolinks
 //= require_tree .

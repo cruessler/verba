@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 4.1.0'
+gem 'rails', '~> 4.2.0'
 
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
@@ -30,7 +30,7 @@ gem 'twitter-bootstrap-rails'
 # gem 'jquery-rails'
 
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks'
+# gem 'turbolinks'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 1.2'
@@ -66,7 +66,7 @@ gem 'simple_form', git: 'https://github.com/plataformatec/simple_form.git', tag:
 # https://github.com/plataformatec/devise
 # http://railscasts.com/episodes/209-introducing-devise
 # Used for authentication and access control
-gem 'devise'
+gem 'devise', '~> 3.5'
 
 # https://github.com/tigrish/devise-i18n
 # https://github.com/plataformatec/devise/wiki/I18n
