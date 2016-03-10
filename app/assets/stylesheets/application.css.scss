@@ -10,13 +10,12 @@
  *
  */
 
-$font-family-sans-serif: Lato, 'DejaVu Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+$font-family-sans-serif: 'Lato', 'DejaVu Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 
 $headings-font-weight: normal;
 
 @import "bootstrap-sass-official/vendor/assets/stylesheets/bootstrap";
 
-@import "fonts";
 @import "devise";
 
 @import "learnables";
@@ -24,7 +23,7 @@ $headings-font-weight: normal;
 @import "words";
 
 .navbar-brand {
-  font-weight: 100;
+  font-weight: 300;
 }
 
 .lead {
