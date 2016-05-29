@@ -7,14 +7,13 @@ class RatingsControllerTest < ActionController::TestCase
 
   setup do
     @rating = ratings(:one)
-    sign_in users(:one)
+    @user = users(:one)
+
+    sign_in @user
   end
 
   test "should get review" do
     get :review
-    assert_response :success
-    
-    get :review, format: :js
     assert_response :success
   end
 
@@ -27,16 +26,12 @@ class RatingsControllerTest < ActionController::TestCase
 
     get :review
     assert_response :success
-    assert_select 'p.alert-info'
+    assert_select 'div#question'
   end
-  
+
   test "should rate learnable" do
     get :review
-    patch :update, format: :js, id: @rating, rating: 5
-    assert_not_nil session[:token]
-
-    patch :update, format: :js, id: @rating, rating: 5, token: session[:token]
-    assert_nil session[:token]
-    assert_redirected_to review_ratings_path
+    patch :update, format: :json, id: @rating.learnable, rating: 5
+    assert_response :success
   end
 end

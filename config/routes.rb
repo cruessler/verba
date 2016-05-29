@@ -3,7 +3,7 @@ Verba::Application.routes.draw do
 
   root 'learnables#overview'
   
-  resources :ratings, only: [ :update ] do
+  resources :ratings, only: [ :index, :update ] do
     collection do
       get 'review'
     end

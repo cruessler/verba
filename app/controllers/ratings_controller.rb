@@ -1,32 +1,47 @@
 class RatingsController < ApplicationController
-  before_action :set_rating, only: [ :update ]
-  
+  MAX_NUMBER_OF_RATINGS_PER_REQUEST = 50
+
+  def index
+    number_of_ratings = [ params[:number].to_i, MAX_NUMBER_OF_RATINGS_PER_REQUEST ].min
+
+    ratings =
+      current_user
+        .rated_learnables
+        .for_review
+        .limit(number_of_ratings)
+        .offset(params[:offset].to_i)
+
+    respond_to do |format|
+      format.json { render json: ratings }
+    end
+  end
+
   # GET /ratings/review
   # GET /ratings/review.js
   def review
-    @learnable = current_user.rated_learnables.next_for_review
-    @rating = @learnable.rating_for(current_user) if @learnable
-    @token = session[:token] = SecureRandom.urlsafe_base64(16)
+    learnables =
+      current_user
+        .rated_learnables
+        .for_review
+        .limit(MAX_NUMBER_OF_RATINGS_PER_REQUEST)
+
+    @learnables_serializer =
+      ActiveModel::Serializer::CollectionSerializer.new(learnables, {})
   end
-  
+
   # PATCH/PUT /ratings/1
   def update
-    if session[:token] == params[:token]
-      session[:token] = nil
-      rating = params[:rating].to_i
+    rating = params[:rating].to_i
 
-      if @rating.user == current_user
-        @rating.recalc_e_factor!(rating)
-        @rating.save
-      end
+    learnable = Learnable.find(params[:id])
+    @rating = learnable.rating_for(current_user)
+
+    @rating.recalc_e_factor!(rating)
+    @rating.save
+
+    respond_to do |format|
+      format.html { redirect_to action: 'review' }
+      format.json { render json: [] }
     end
-
-    redirect_to action: 'review'
   end
-
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_rating
-      @rating = Rating.find(params[:id])
-    end
 end
