@@ -72,3 +72,5 @@ gem 'devise', '~> 3.5'
 # https://github.com/plataformatec/devise/wiki/I18n
 # Used for l18n of devise
 gem 'devise-i18n'
+
+gem 'active_model_serializers', '~> 0.10.0'
