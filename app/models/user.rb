@@ -34,13 +34,22 @@ class User < ActiveRecord::Base
     def next_scheduled_for_review
       in_current_vocabulary.scheduled_for_review.random_next
     end
-    
-    def next_not_yet_rated
-      proxy_association.owner.learnables.not_yet_rated.first
+
+    def not_yet_rated
+      proxy_association.owner.learnables.not_yet_rated
     end
     
-    def next_for_review
-      next_not_yet_rated || next_scheduled_for_review || next_with_bad_rating
+    def next_not_yet_rated
+      not_yet_rated.first
+    end
+    
+    def for_review
+      Learnable
+        .from(
+          "(#{not_yet_rated.to_sql}) " +
+          "UNION SELECT * FROM (#{in_current_vocabulary.scheduled_for_review.order("RANDOM()").to_sql}) " +
+          "UNION SELECT * FROM (#{in_current_vocabulary.with_bad_rating.order("RANDOM()").to_sql}) learnables")
+        .select("*")
     end
   end
   
