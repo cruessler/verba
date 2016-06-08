@@ -38,3 +38,5 @@
 /lib/capistrano/tasks/copy_assets_to_public_dir.rake
 
 *.swp
+
+/elm-stuff
