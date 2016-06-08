@@ -5,6 +5,22 @@
       <h1>Lernen</h1>
     </div>
 
-    <%= render partial: 'question', locals: { rating: @rating, learnable: @learnable } %>
+    <div id="question"></div>
   </div>
 </div>
+
+<script>
+  $(document).ready(function() {
+    var csrfTokenNode = document.head.querySelector('meta[name="csrf-token"]');
+    var csrfToken =
+      (csrfTokenNode === null || (typeof csrfTokenNode.content !== "string"))
+        ? null
+        : csrfTokenNode.content;
+
+    Elm.Question.embed(
+      document.getElementById("question"),
+      { "csrfToken": csrfToken,
+        "questions": <%= @learnables_serializer.to_json.html_safe %>
+      })
+  });
+</script>
