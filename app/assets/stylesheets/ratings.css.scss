@@ -9,6 +9,12 @@
   font-size: $font-size-base * 1.5;
   line-height: $line-height-computed * 1.5;
   border-top: 1px solid #EEE;
+
+  animation: 0.4s ease-in 0s fade-in;
+}
+
+@keyframes fade-in {
+  from { opacity: 0 } to { opacity: 1 }
 }
 
 .rating {
