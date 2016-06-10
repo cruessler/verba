@@ -40,7 +40,6 @@ class RatingsController < ApplicationController
     @rating.save
 
     respond_to do |format|
-      format.html { redirect_to action: 'review' }
       format.json { render json: [] }
     end
   end
