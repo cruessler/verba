@@ -47,6 +47,10 @@ class User < ActiveRecord::Base
     self.current_vocabulary = Vocabulary.first if current_vocabulary.nil?
   end
 
+  def reset_ratings!
+    ratings.delete_all
+  end
+
   def questions_for_the_next timespan
     rated_learnables.where([ 'next_review < ?', Time.now + timespan ]).count
   end
