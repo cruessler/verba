@@ -6,13 +6,6 @@
     </div>
 
     <div id="question"></div>
-
-    <dl class="question-info">
-      <dt>Fragen verbleibend</dt>
-      <dd><%= [ current_user.learnables.not_yet_rated.count + questions_left_for_today - 1, 0 ].max %></dd>
-      <dt>Mit Bewertung &lt; 4</dt>
-      <dd><%= [ questions_left_with_bad_rating - 1, 0 ].max %></dd>
-    </dl>
   </div>
 </div>
 
@@ -27,7 +20,8 @@
     Elm.Question.embed(
       document.getElementById("question"),
       { "csrfToken": csrfToken,
-        "questions": <%= @learnables_serializer.to_json.html_safe %>
+        "questions": <%= @learnables_serializer.to_json.html_safe %>,
+        "status": <%= @status.to_json.html_safe %>
       })
   });
 </script>

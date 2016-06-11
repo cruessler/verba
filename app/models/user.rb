@@ -50,4 +50,9 @@ class User < ActiveRecord::Base
   def questions_for_the_next timespan
     rated_learnables.where([ 'next_review < ?', Time.now + timespan ]).count
   end
+
+  def questions_left_for_today
+    learnables.not_yet_rated.count +
+      rated_learnables.merge(learnables).scheduled_for_review.count
+  end
 end

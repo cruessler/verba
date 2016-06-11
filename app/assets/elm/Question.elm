@@ -24,7 +24,7 @@ import Json.Encode as Encode
 {-| The widget is initialized with Rails’ CSRF token and and an initial list of
 questions.
 -}
-main : Program { csrfToken : Maybe String, questions : List Question }
+main : Program Flags
 main =
   Html.programWithFlags
     { init = init
@@ -65,6 +65,17 @@ ratingEndpointUrl : Int -> String
 ratingEndpointUrl id =
   "/ratings/" ++ toString id ++ ".json"
 
+type alias Flags =
+  { csrfToken : Maybe String
+  , questions : List Question
+  , status : Status
+  }
+
+type alias Status =
+  { questionsLeftForToday : Int
+  , questionsWithBadRating : Int
+  }
+
 type alias Question =
   { id : Int
   , question : String
@@ -73,24 +84,22 @@ type alias Question =
 
 type alias Model =
   { showAnswer : Bool
+  , status : Status
   , questions : List Question
   , csrfToken : Maybe String
   }
 
-model : Model
-model =
-  { showAnswer = False
-  , questions = []
-  , csrfToken = Nothing
-  }
-
-init
-  : { csrfToken : Maybe String
-    , questions : List Question
-    }
-  -> (Model, Cmd Msg)
-init flags =
-  ({ model | csrfToken = flags.csrfToken, questions = flags.questions }, Cmd.none)
+init : Flags  -> (Model, Cmd Msg)
+init {csrfToken, questions, status} =
+  let
+    model =
+      { showAnswer = False
+      , status = status
+      , questions = questions
+      , csrfToken = csrfToken
+      }
+  in
+    (model, Cmd.none)
 
 
 -- UPDATE
@@ -100,8 +109,8 @@ type Msg
   | ShowSolution
   | FetchFail Http.Error
   | FetchSucceed (List Question)
-  | PostFail Http.RawError
-  | PostSucceed Http.Response
+  | PostFail Http.Error
+  | PostSucceed Status
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update action model =
@@ -130,8 +139,8 @@ update action model =
     FetchFail _ ->
       (model, Cmd.none)
 
-    PostSucceed _ ->
-      (model, Cmd.none)
+    PostSucceed status ->
+      ({ model | status = status }, Cmd.none)
 
     PostFail _ ->
       (model, Cmd.none)
@@ -146,6 +155,12 @@ decodeQuestion =
     ("id" := int)
     ("question" := string)
     ("answer" := list string)
+
+decodeStatus : Json.Decoder Status
+decodeStatus =
+  object2 Status
+    ("questionsLeftForToday" := int)
+    ("questionsWithBadRating" := int)
 
 fetchNewQuestions : (List Question) -> Cmd Msg
 fetchNewQuestions questions =
@@ -180,12 +195,16 @@ postRating question rating csrfToken =
         task =
           Http.send Http.defaultSettings
             { verb = "PUT"
-            , headers = [("X-CSRF-Token", token)]
+            , headers =
+              [ ("Content-Type", "application/json")
+              , ("X-CSRF-Token", token)
+              ]
             , url = url
             , body = Http.string params
             }
       in
-        Task.perform PostFail PostSucceed task
+        Http.fromJson decodeStatus task
+        |> Task.perform PostFail PostSucceed
 
     Nothing ->
       Cmd.none
@@ -252,9 +271,19 @@ answer model =
   else
     div [] []
 
+status : Model -> Html Msg
+status {status} =
+  dl [ class "question-info" ]
+    [ dt [] [ text "Fragen verbleibend" ]
+    , dd [] [ text (toString status.questionsLeftForToday) ]
+    , dt [] [ text "Mit Bewertung < 4" ]
+    , dd [] [ text (toString status.questionsWithBadRating) ]
+    ]
+
 view : Model -> Html Msg
 view model =
   div []
     [ question model
     , answer model
+    , status model
     ]

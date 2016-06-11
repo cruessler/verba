@@ -25,6 +25,7 @@ class RatingsController < ApplicationController
         .for_review
         .limit(MAX_NUMBER_OF_RATINGS_PER_REQUEST)
 
+    @status = status
     @learnables_serializer =
       ActiveModel::Serializer::CollectionSerializer.new(learnables, {})
   end
@@ -40,7 +41,16 @@ class RatingsController < ApplicationController
     @rating.save
 
     respond_to do |format|
-      format.json { render json: [] }
+      format.json { render json: status }
     end
+  end
+
+  private
+  def status
+    questions_left_for_today  = current_user.questions_left_for_today
+    questions_with_bad_rating = current_user.rated_learnables.with_bad_rating.count
+
+    { "questionsLeftForToday": questions_left_for_today,
+      "questionsWithBadRating": questions_with_bad_rating }
   end
 end
