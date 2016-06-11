@@ -19,6 +19,7 @@ import Html.Events exposing (onClick)
 import Task
 import Http
 import Json.Decode as Json exposing (..)
+import Json.Encode as Encode
 
 {-| The widget is initialized with Rails’ CSRF token and and an initial list of
 questions.
@@ -172,12 +173,16 @@ postRating question rating csrfToken =
       let
         url = ratingEndpointUrl question.id
 
+        params =
+          Encode.object [ ("rating", Encode.int rating) ]
+          |> Encode.encode 0
+
         task =
           Http.send Http.defaultSettings
             { verb = "PUT"
             , headers = [("X-CSRF-Token", token)]
             , url = url
-            , body = Http.empty
+            , body = Http.string params
             }
       in
         Task.perform PostFail PostSucceed task
