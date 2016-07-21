@@ -10,7 +10,7 @@
 </div>
 
 <script>
-  $(document).ready(function() {
+  document.addEventListener("DOMContentLoaded", function(event) {
     var csrfTokenNode = document.head.querySelector('meta[name="csrf-token"]');
     var csrfToken =
       (csrfTokenNode === null || (typeof csrfTokenNode.content !== "string"))
