@@ -40,4 +40,4 @@
 *.swp
 
 /elm-stuff
-/app/assets/javascripts/elm.js
+/public/elm.js

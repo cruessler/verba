@@ -7,4 +7,4 @@
 
 puts "Compiling Elm code"
 
-puts `elm make app/assets/elm/Question.elm --output app/assets/javascripts/elm.js`
+puts `elm make app/assets/elm/Question.elm --output public/elm.js`
