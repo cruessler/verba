@@ -10,6 +10,7 @@ The widget maintains an ordered queue of questions that is populated on
 initialization and refilled once a configurable threshold is crossed.
 
 @docs main
+
 -}
 
 import Html exposing (..)
@@ -21,269 +22,310 @@ import Http
 import Json.Decode as Json exposing (..)
 import Json.Encode as Encode
 
+
 {-| The widget is initialized with Rails’ CSRF token and and an initial list of
 questions.
 -}
 main : Program Flags
 main =
-  Html.programWithFlags
-    { init = init
-    , update = update
-    , subscriptions = subscriptions
-    , view = view
-    }
+    Html.programWithFlags
+        { init = init
+        , update = update
+        , subscriptions = subscriptions
+        , view = view
+        }
+
 
 
 -- MODEL
+
 
 {-| The minimum number of questions that should be available in the queue.
 
 When an answer is rated and the length of the queue is less than the number
 specified, new questions are loaded asynchronosly.
+
 -}
 minimumNumberOfQuestions : Int
-minimumNumberOfQuestions = 50
+minimumNumberOfQuestions =
+    50
+
 
 {-| The number of questions to be requested when the queue is refilled.
 -}
 numberOfQuestionsToFetch : Int
-numberOfQuestionsToFetch = 20
+numberOfQuestionsToFetch =
+    20
+
 
 {-| All answers get a rating between 1 and 6.
 -}
 allRatings : List Int
-allRatings = [1..6]
+allRatings =
+    List.range 1 6
+
 
 {-| The URL of the JSON endpoint used for refilling the queue
 -}
 ratingsEndpointUrl : String
-ratingsEndpointUrl = "/ratings.json"
+ratingsEndpointUrl =
+    "/ratings.json"
+
 
 {-| The URL of the JSON endpoint used for reporting ratings.
 -}
 ratingEndpointUrl : Int -> String
 ratingEndpointUrl id =
-  "/ratings/" ++ toString id ++ ".json"
+    "/ratings/" ++ toString id ++ ".json"
+
 
 type alias Flags =
-  { csrfToken : Maybe String
-  , questions : List Question
-  , status : Status
-  }
+    { csrfToken : Maybe String
+    , questions : List Question
+    , status : Status
+    }
+
 
 type alias Status =
-  { questionsLeftForToday : Int
-  , questionsWithBadRating : Int
-  }
+    { questionsLeftForToday : Int
+    , questionsWithBadRating : Int
+    }
+
 
 type alias Question =
-  { id : Int
-  , question : String
-  , answer: List String
-  }
+    { id : Int
+    , question : String
+    , answer : List String
+    }
+
 
 type alias Model =
-  { showAnswer : Bool
-  , status : Status
-  , questions : List Question
-  , csrfToken : Maybe String
-  }
+    { showAnswer : Bool
+    , status : Status
+    , questions : List Question
+    , csrfToken : Maybe String
+    }
 
-init : Flags  -> (Model, Cmd Msg)
-init {csrfToken, questions, status} =
-  let
-    model =
-      { showAnswer = False
-      , status = status
-      , questions = questions
-      , csrfToken = csrfToken
-      }
-  in
-    (model, Cmd.none)
+
+init : Flags -> ( Model, Cmd Msg )
+init { csrfToken, questions, status } =
+    let
+        model =
+            { showAnswer = False
+            , status = status
+            , questions = questions
+            , csrfToken = csrfToken
+            }
+    in
+        ( model, Cmd.none )
+
 
 
 -- UPDATE
 
+
 type Msg
-  = RateAnswer Int
-  | ShowSolution
-  | FetchFail Http.Error
-  | FetchSucceed (List Question)
-  | PostFail Http.Error
-  | PostSucceed Status
+    = RateAnswer Int
+    | ShowSolution
+    | FetchFail Http.Error
+    | FetchSucceed (List Question)
+    | PostFail Http.Error
+    | PostSucceed Status
 
-update : Msg -> Model -> (Model, Cmd Msg)
+
+update : Msg -> Model -> ( Model, Cmd Msg )
 update action model =
-  case action of
-    RateAnswer rating ->
-      if rating >= 1 && rating <= 6 then
-        case model.questions of
-          [] ->
-            { model | showAnswer = False, questions = [] }
-              ! [ fetchNewQuestions [] ]
+    case action of
+        RateAnswer rating ->
+            if rating >= 1 && rating <= 6 then
+                case model.questions of
+                    [] ->
+                        { model | showAnswer = False, questions = [] }
+                            ! [ fetchNewQuestions [] ]
 
-          first :: rest ->
-            { model | showAnswer = False, questions = rest }
-              ! [ fetchNewQuestions model.questions
-                , postRating first rating model.csrfToken ]
+                    first :: rest ->
+                        { model | showAnswer = False, questions = rest }
+                            ! [ fetchNewQuestions model.questions
+                              , postRating first rating model.csrfToken
+                              ]
+            else
+                ( model, Cmd.none )
 
-      else
-        (model, Cmd.none)
+        ShowSolution ->
+            ( { model | showAnswer = True }, Cmd.none )
 
-    ShowSolution ->
-      ({ model | showAnswer = True }, Cmd.none)
+        FetchSucceed questions ->
+            ( { model | questions = List.append model.questions questions }, Cmd.none )
 
-    FetchSucceed questions ->
-      ({ model | questions = List.append model.questions questions }, Cmd.none)
+        FetchFail _ ->
+            ( model, Cmd.none )
 
-    FetchFail _ ->
-      (model, Cmd.none)
+        PostSucceed status ->
+            ( { model | status = status }, Cmd.none )
 
-    PostSucceed status ->
-      ({ model | status = status }, Cmd.none)
+        PostFail _ ->
+            ( model, Cmd.none )
 
-    PostFail _ ->
-      (model, Cmd.none)
 
 decodeQuestions : Json.Decoder (List Question)
 decodeQuestions =
-  list decodeQuestion
+    list decodeQuestion
+
 
 decodeQuestion : Json.Decoder Question
 decodeQuestion =
-  object3 Question
-    ("id" := int)
-    ("question" := string)
-    ("answer" := list string)
+    object3 Question
+        ("id" := int)
+        ("question" := string)
+        ("answer" := list string)
+
 
 decodeStatus : Json.Decoder Status
 decodeStatus =
-  object2 Status
-    ("questionsLeftForToday" := int)
-    ("questionsWithBadRating" := int)
+    object2 Status
+        ("questionsLeftForToday" := int)
+        ("questionsWithBadRating" := int)
 
-fetchNewQuestions : (List Question) -> Cmd Msg
+
+fetchNewQuestions : List Question -> Cmd Msg
 fetchNewQuestions questions =
-  let
-    queueLength = List.length questions
+    let
+        queueLength =
+            List.length questions
 
-    queryParams =
-      [ ( "number", toString numberOfQuestionsToFetch )
-      , ( "offset", toString queueLength )
-      ]
+        queryParams =
+            [ ( "number", toString numberOfQuestionsToFetch )
+            , ( "offset", toString queueLength )
+            ]
 
-    url = Http.url ratingsEndpointUrl queryParams
+        url =
+            Http.url ratingsEndpointUrl queryParams
 
-    task = Http.get decodeQuestions url
-  in
-    if queueLength < minimumNumberOfQuestions then
-      Task.perform FetchFail FetchSucceed task
-    else
-      Cmd.none
+        task =
+            Http.get decodeQuestions url
+    in
+        if queueLength < minimumNumberOfQuestions then
+            Task.perform FetchFail FetchSucceed task
+        else
+            Cmd.none
+
 
 postRating : Question -> Int -> Maybe String -> Cmd Msg
 postRating question rating csrfToken =
-  case csrfToken of
-    Just token ->
-      let
-        url = ratingEndpointUrl question.id
+    case csrfToken of
+        Just token ->
+            let
+                url =
+                    ratingEndpointUrl question.id
 
-        params =
-          Encode.object [ ("rating", Encode.int rating) ]
-          |> Encode.encode 0
+                params =
+                    Encode.object [ ( "rating", Encode.int rating ) ]
+                        |> Encode.encode 0
 
-        task =
-          Http.send Http.defaultSettings
-            { verb = "PUT"
-            , headers =
-              [ ("Content-Type", "application/json")
-              , ("X-CSRF-Token", token)
-              ]
-            , url = url
-            , body = Http.string params
-            }
-      in
-        Http.fromJson decodeStatus task
-        |> Task.perform PostFail PostSucceed
+                task =
+                    Http.send Http.defaultSettings
+                        { verb = "PUT"
+                        , headers =
+                            [ ( "Content-Type", "application/json" )
+                            , ( "X-CSRF-Token", token )
+                            ]
+                        , url = url
+                        , body = Http.string params
+                        }
+            in
+                Http.fromJson decodeStatus task
+                    |> Task.perform PostFail PostSucceed
 
-    Nothing ->
-      Cmd.none
+        Nothing ->
+            Cmd.none
+
 
 
 -- SUBSCRIPTIONS
 
+
 subscriptions : Model -> Sub Msg
 subscriptions model =
-  Sub.none
+    Sub.none
+
 
 
 -- VIEW
 
+
 ratingButton : Int -> Html Msg
 ratingButton rating =
-  button
-    [ class "btn btn-default rate-link pull-right"
-    , onClick (RateAnswer rating) ]
-    [ text (toString rating) ]
+    button
+        [ class "btn btn-default rate-link pull-right"
+        , onClick (RateAnswer rating)
+        ]
+        [ text (toString rating) ]
+
 
 ratingButtons : List (Html Msg)
 ratingButtons =
-  List.map ratingButton (List.reverse allRatings)
+    List.map ratingButton (List.reverse allRatings)
+
 
 question : Model -> Html Msg
 question model =
-  case model.questions of
-    [] ->
-      p [ class "alert alert-info" ]
-        [ text "Im Augenblick gibt es nichts mehr zu lernen." ]
+    case model.questions of
+        [] ->
+            p [ class "alert alert-info" ]
+                [ text "Im Augenblick gibt es nichts mehr zu lernen." ]
 
-    first :: _ ->
-      div [ class "row" ]
-        [ div [ class "col-md-12" ]
-          [ span [ class "h4" ] [ text first.question ]
-          , a
-            [ id "show-solution"
-            , class "btn btn-default pull-right"
-            , onClick ShowSolution ]
-            [ text "Lösung zeigen" ]
-        ]
-      ]
+        first :: _ ->
+            div [ class "row" ]
+                [ div [ class "col-md-12" ]
+                    [ span [ class "h4" ] [ text first.question ]
+                    , a
+                        [ id "show-solution"
+                        , class "btn btn-default pull-right"
+                        , onClick ShowSolution
+                        ]
+                        [ text "Lösung zeigen" ]
+                    ]
+                ]
+
 
 answerLines : List String -> List (Html Msg)
 answerLines lines =
-  List.map (\line -> div [] [ text line ]) lines
+    List.map (\line -> div [] [ text line ]) lines
+
 
 answer : Model -> Html Msg
 answer model =
-  if model.showAnswer then
-    case model.questions of
-      [] ->
+    if model.showAnswer then
+        case model.questions of
+            [] ->
+                div [] []
+
+            first :: _ ->
+                div [ id "solution", class "solution" ]
+                    [ div [] (answerLines first.answer)
+                    , div [ class "row rating" ]
+                        [ div [ class "col-md-6" ] [ span [ class "h4" ] [ text "Bewerten" ] ]
+                        , div [ class "col-md-6" ] ratingButtons
+                        ]
+                    ]
+    else
         div [] []
 
-      first :: _ ->
-        div [ id "solution", class "solution" ]
-          [ div [] (answerLines first.answer)
-          , div [ class "row rating" ]
-              [ div [ class "col-md-6" ] [ span [ class "h4" ] [ text "Bewerten" ] ]
-              , div [ class "col-md-6" ] ratingButtons
-              ]
-          ]
-  else
-    div [] []
 
 status : Model -> Html Msg
-status {status} =
-  dl [ class "question-info" ]
-    [ dt [] [ text "Fragen verbleibend" ]
-    , dd [] [ text (toString status.questionsLeftForToday) ]
-    , dt [] [ text "Mit Bewertung < 4" ]
-    , dd [] [ text (toString status.questionsWithBadRating) ]
-    ]
+status { status } =
+    dl [ class "question-info" ]
+        [ dt [] [ text "Fragen verbleibend" ]
+        , dd [] [ text (toString status.questionsLeftForToday) ]
+        , dt [] [ text "Mit Bewertung < 4" ]
+        , dd [] [ text (toString status.questionsWithBadRating) ]
+        ]
+
 
 view : Model -> Html Msg
 view model =
-  div []
-    [ question model
-    , answer model
-    , status model
-    ]
+    div []
+        [ question model
+        , answer model
+        , status model
+        ]
