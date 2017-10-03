@@ -1,0 +1,21 @@
+{
+  "name": "verba",
+  "description": "The Elm portions of Verba, a vocabulary trainer",
+  "private": true,
+  "author": "Christoph Rüßler <christoph.ruessler@mailbox.org>",
+  "version": "0.1.0",
+  "repository": "",
+  "scripts": {
+    "start": "brunch watch",
+    "build": "brunch build --production"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "auto-reload-brunch": "^2",
+    "babel-brunch": "^6.1.1",
+    "brunch": "^2",
+    "elm-brunch": "^0.9.0",
+    "javascript-brunch": "^2.10.0",
+    "uglify-js-brunch": "^2"
+  }
+}
