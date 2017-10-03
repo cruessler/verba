@@ -1,7 +1,7 @@
 // See http://brunch.io for documentation.
 exports.config = {
   files: {
-    javascripts: {joinTo: {'javascripts/brunch.js': /^app/}}
+    javascripts: {joinTo: 'javascripts/brunch.js'}
   },
 
   conventions: {
@@ -10,7 +10,7 @@ exports.config = {
 
   paths: {
     public: 'public/assets',
-    watched: ['app/assets/javascripts/elm.js', 'app/assets/elm']
+    watched: ['app/assets/javascripts', 'app/assets/elm']
   },
 
   plugins: {
@@ -21,5 +21,22 @@ exports.config = {
       outputFile: 'elm.js'
     }
   },
+
+  modules: {
+    autoRequire: {
+      "javascripts/brunch.js": [
+        "assets/javascripts/application.js"
+      ]
+    }
+  },
+
+  npm: {
+    enabled: true,
+    globals: {
+      $: 'jquery',
+      jQuery: 'jquery'
+    }
+  },
+
   notifications: false
 };

@@ -9,7 +9,10 @@
     "start": "brunch watch",
     "build": "brunch build --production"
   },
-  "dependencies": {},
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "jquery-ujs": "^1.2.2"
+  },
   "devDependencies": {
     "auto-reload-brunch": "^2",
     "babel-brunch": "^6.1.1",
