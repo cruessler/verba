@@ -14,19 +14,19 @@ initialization and refilled once a configurable threshold is crossed.
 -}
 
 import Html exposing (..)
-import Html.App as Html
+import Html as Html
 import Html.Attributes exposing (id, class)
 import Html.Events exposing (onClick)
 import Task
 import Http
-import Json.Decode as Json exposing (..)
+import Json.Decode as Decode exposing (field)
 import Json.Encode as Encode
 
 
 {-| The widget is initialized with Rails’ CSRF token and and an initial list of
 questions.
 -}
-main : Program Flags
+main : Program Flags Model Msg
 main =
     Html.programWithFlags
         { init = init
@@ -127,10 +127,8 @@ init { csrfToken, questions, status } =
 type Msg
     = RateAnswer Int
     | ShowSolution
-    | FetchFail Http.Error
-    | FetchSucceed (List Question)
-    | PostFail Http.Error
-    | PostSucceed Status
+    | FetchQuestions (Result Http.Error (List Question))
+    | PostRating (Result Http.Error Status)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -154,37 +152,37 @@ update action model =
         ShowSolution ->
             ( { model | showAnswer = True }, Cmd.none )
 
-        FetchSucceed questions ->
+        FetchQuestions (Ok questions) ->
             ( { model | questions = List.append model.questions questions }, Cmd.none )
 
-        FetchFail _ ->
+        FetchQuestions _ ->
             ( model, Cmd.none )
 
-        PostSucceed status ->
+        PostRating (Ok status) ->
             ( { model | status = status }, Cmd.none )
 
-        PostFail _ ->
+        PostRating _ ->
             ( model, Cmd.none )
 
 
-decodeQuestions : Json.Decoder (List Question)
+decodeQuestions : Decode.Decoder (List Question)
 decodeQuestions =
-    list decodeQuestion
+    Decode.list decodeQuestion
 
 
-decodeQuestion : Json.Decoder Question
+decodeQuestion : Decode.Decoder Question
 decodeQuestion =
-    object3 Question
-        ("id" := int)
-        ("question" := string)
-        ("answer" := list string)
+    Decode.map3 Question
+        (field "id" Decode.int)
+        (field "question" Decode.string)
+        (field "answer" (Decode.list Decode.string))
 
 
-decodeStatus : Json.Decoder Status
+decodeStatus : Decode.Decoder Status
 decodeStatus =
-    object2 Status
-        ("questionsLeftForToday" := int)
-        ("questionsWithBadRating" := int)
+    Decode.map2 Status
+        (field "questionsLeftForToday" Decode.int)
+        (field "questionsWithBadRating" Decode.int)
 
 
 fetchNewQuestions : List Question -> Cmd Msg
@@ -198,14 +196,19 @@ fetchNewQuestions questions =
             , ( "offset", toString queueLength )
             ]
 
-        url =
-            Http.url ratingsEndpointUrl queryParams
+        queryString =
+            queryParams
+                |> List.map (\( key, value ) -> key ++ "=" ++ value)
+                |> String.join "&"
 
-        task =
-            Http.get decodeQuestions url
+        url =
+            ratingsEndpointUrl ++ "?" ++ queryString
+
+        request =
+            Http.get url decodeQuestions
     in
         if queueLength < minimumNumberOfQuestions then
-            Task.perform FetchFail FetchSucceed task
+            Http.send FetchQuestions request
         else
             Cmd.none
 
@@ -220,21 +223,22 @@ postRating question rating csrfToken =
 
                 params =
                     Encode.object [ ( "rating", Encode.int rating ) ]
-                        |> Encode.encode 0
 
-                task =
-                    Http.send Http.defaultSettings
-                        { verb = "PUT"
+                request =
+                    Http.request
+                        { method = "PUT"
                         , headers =
-                            [ ( "Content-Type", "application/json" )
-                            , ( "X-CSRF-Token", token )
+                            [ Http.header "Content-Type" "application/json"
+                            , Http.header "X-CSRF-Token" token
                             ]
                         , url = url
-                        , body = Http.string params
+                        , body = Http.jsonBody params
+                        , expect = Http.expectJson decodeStatus
+                        , timeout = Nothing
+                        , withCredentials = False
                         }
             in
-                Http.fromJson decodeStatus task
-                    |> Task.perform PostFail PostSucceed
+                Http.send PostRating request
 
         Nothing ->
             Cmd.none
