@@ -1,8 +1,0 @@
-{
-  "name": "verba",
-  "dependencies": {
-    "bootstrap-sass-official": "~3.1.0",
-    "jquery": "",
-    "jquery-ujs": ""
-  }
-}
