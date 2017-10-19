@@ -68,7 +68,7 @@ gem 'simple_form', '~> 3.2'
 # https://github.com/plataformatec/devise
 # http://railscasts.com/episodes/209-introducing-devise
 # Used for authentication and access control
-gem 'devise', '~> 3.5'
+gem 'devise', '~> 4.0'
 
 # https://github.com/tigrish/devise-i18n
 # https://github.com/plataformatec/devise/wiki/I18n

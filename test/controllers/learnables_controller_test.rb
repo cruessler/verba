@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class LearnablesControllerTest < ActionController::TestCase
-  include Devise::TestHelpers
+  include Devise::Test::ControllerHelpers
   
   test "should get overview" do
     get :overview

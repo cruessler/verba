@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class WordsControllerTest < ActionController::TestCase
-  include Devise::TestHelpers
+  include Devise::Test::ControllerHelpers
 
   setup do
     @word = learnables(:word)

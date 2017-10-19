@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class RatingsControllerTest < ActionController::TestCase
-  include Devise::TestHelpers
+  include Devise::Test::ControllerHelpers
 
   self.use_transactional_fixtures = true
 

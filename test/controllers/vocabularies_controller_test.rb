@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class VocabulariesControllerTest < ActionController::TestCase
-  include Devise::TestHelpers
+  include Devise::Test::ControllerHelpers
 
   test "should get select" do
     sign_in users(:one)
