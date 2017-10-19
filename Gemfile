@@ -63,7 +63,7 @@ end
 gem 'rails-i18n', '~> 4.0.0.pre' # For 4.0.x
 
 # https://github.com/plataformatec/simple_form
-gem 'simple_form', git: 'https://github.com/plataformatec/simple_form.git', tag: 'v3.1.0.rc1'
+gem 'simple_form', '~> 3.2'
 
 # https://github.com/plataformatec/devise
 # http://railscasts.com/episodes/209-introducing-devise
