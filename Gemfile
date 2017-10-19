@@ -7,10 +7,7 @@ gem 'rails', '~> 4.2.10'
 gem 'sqlite3'
 
 # Use SCSS for stylesheets
-# Depending on at least 4.0.2 to work around a bug that prevents assets
-# from being precompiled.
-# See https://github.com/rails/sass-rails/issues/191
-gem 'sass-rails', '~> 4.0.2'
+gem 'sass-rails', '~> 5.0'
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
