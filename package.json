@@ -10,7 +10,7 @@
     "build": "brunch build --production"
   },
   "dependencies": {
-    "bootstrap": "^3.3.7",
+    "bootstrap-sass": "^3.3.7",
     "jquery-ujs": "^1.2.2"
   },
   "devDependencies": {

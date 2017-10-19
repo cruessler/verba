@@ -12,4 +12,7 @@ Rails.application.config.assets.paths << Rails.root.join('vendor', 'assets', 'fo
 # Bootstrap uses depend_on_asset in _glyphicons.scss which does not respect $icon-font-path.
 # Thus the font directory of bootstrap has to be added to the asset search paths.
 # https://github.com/twbs/bootstrap-sass/issues/592#issuecomment-46108968
-Rails.application.config.assets.paths << Rails.root.join('vendor', 'assets', 'components', 'bootstrap-sass-official', 'vendor', 'assets', 'fonts')
+Rails.application.config.assets.paths << Rails.root.join('node_modules', 'bootstrap-sass', 'assets', 'fonts', 'bootstrap')
+
+# Bootstrap sass files, installed by npm
+Rails.application.config.assets.paths << Rails.root.join('node_modules', 'bootstrap-sass', 'assets', 'stylesheets')
