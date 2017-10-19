@@ -21,31 +21,33 @@ class WordsControllerTest < ActionController::TestCase
 
   test "should create word" do
     assert_difference('Word.count') do
-      post :create, word: { lemma: 'ădămās', long_lemma: 'ădămās, antis m.',
-        translation: 'Stahl' }           
+      post :create,
+        params:
+          { word: { lemma: 'ădămās', long_lemma: 'ădămās, antis m.',
+            translation: 'Stahl' } }
     end
 
     assert_redirected_to word_path(assigns(:word))
   end
 
   test "should show word" do
-    get :show, id: @word
+    get :show, params: { id: @word }
     assert_response :success
   end
 
   test "should get edit" do
-    get :edit, id: @word
+    get :edit, params: { id: @word }
     assert_response :success
   end
 
   test "should update word" do
-    patch :update, id: @word, word: { translation: 'different translation' }
+    patch :update, params: { id: @word, word: { translation: 'different translation' } }
     assert_redirected_to word_path(assigns(:word))
   end
 
   test "should destroy word" do
     assert_difference('Word.count', -1) do
-      delete :destroy, id: @word
+      delete :destroy, params: { id: @word }
     end
 
     assert_redirected_to words_path

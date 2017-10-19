@@ -3,8 +3,6 @@ require 'test_helper'
 class RatingsControllerTest < ActionController::TestCase
   include Devise::Test::ControllerHelpers
 
-  self.use_transactional_fixtures = true
-
   setup do
     @rating = ratings(:one)
     @user = users(:one)
@@ -31,7 +29,7 @@ class RatingsControllerTest < ActionController::TestCase
 
   test "should rate learnable" do
     get :review
-    patch :update, format: :json, id: @rating.learnable, rating: 5
+    patch :update, params: { format: :json, id: @rating.learnable, rating: 5 }
     assert_response :success
   end
 end

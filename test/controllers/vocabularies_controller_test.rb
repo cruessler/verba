@@ -5,11 +5,11 @@ class VocabulariesControllerTest < ActionController::TestCase
 
   test "should get select" do
     sign_in users(:one)
-    get :select, id: vocabularies(:one)
+    get :select, params: { id: vocabularies(:one) }
     assert_response :redirect
     assert_equal assigns(:current_user).current_vocabulary, vocabularies(:one)
 
-    get :select, id: vocabularies(:two)
+    get :select, params: { id: vocabularies(:two) }
     assert_response :redirect
     assert_equal assigns(:current_user).current_vocabulary, vocabularies(:two)
   end

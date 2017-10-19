@@ -70,3 +70,7 @@ gem 'devise', '~> 4.0'
 gem 'devise-i18n'
 
 gem 'active_model_serializers', '~> 0.10.0'
+
+# Rails 5.0 has removed `assigns` in controllers test and extracted the
+# functionality to a gem.
+gem 'rails-controller-testing'

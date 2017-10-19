@@ -21,31 +21,34 @@ class PhrasesControllerTest < ActionController::TestCase
 
   test "should create phrase" do
     assert_difference('Phrase.count') do
-      post :create, phrase: { lemma: 'ab', phrase: 'ā tertiā hōrā',
-        translation: 'von der dritten Stunde an' }
+      post :create,
+        params:
+          { phrase: { lemma: 'ab', phrase: 'ā tertiā hōrā',
+            translation: 'von der dritten Stunde an' } }
     end
 
     assert_redirected_to phrase_path(assigns(:phrase))
   end
 
   test "should show phrase" do
-    get :show, id: @phrase
+    get :show, params: { id: @phrase }
     assert_response :success
   end
 
   test "should get edit" do
-    get :edit, id: @phrase
+    get :edit, params: { id: @phrase }
     assert_response :success
   end
 
   test "should update phrase" do
-    patch :update, id: @phrase, phrase: { translation: 'different translation' }
+    patch :update,
+      params: { id: @phrase, phrase: { translation: 'different translation' } }
     assert_redirected_to phrase_path(assigns(:phrase))
   end
 
   test "should destroy phrase" do
     assert_difference('Phrase.count', -1) do
-      delete :destroy, id: @phrase
+      delete :destroy, params: { id: @phrase }
     end
 
     assert_redirected_to phrases_path
