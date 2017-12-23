@@ -29,7 +29,7 @@ gem 'less-rails', '~> 2.8'
 # gem 'turbolinks'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 1.2'
+gem 'jbuilder', '~> 2.7'
 
 gem 'thin'
 
