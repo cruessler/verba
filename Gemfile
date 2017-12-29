@@ -18,9 +18,6 @@ gem 'therubyracer', platforms: :ruby
 # The gem is used for helper methods and generators.
 # The css and js files are managed by bower
 gem 'twitter-bootstrap-rails'
-# Version 3.0 seems to have a dependency on grease which makes some tests fail.
-# See https://stackoverflow.com/questions/46825582
-gem 'less-rails', '~> 2.8'
 
 # Use jquery as the JavaScript library (made obsolete by the use of bower)
 # gem 'jquery-rails'

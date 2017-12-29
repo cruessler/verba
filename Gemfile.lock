@@ -220,7 +220,6 @@ DEPENDENCIES
   devise (~> 4.0)
   devise-i18n
   jbuilder (~> 2.7)
-  less-rails (~> 2.8)
   listen
   rails (>= 5.1, < 5.2)
   rails-controller-testing
