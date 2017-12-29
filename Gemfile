@@ -44,10 +44,14 @@ end
 # Use unicorn as the app server
 # gem 'unicorn'
 
-# Use Capistrano for deployment
-# http://capistranorb.com/documentation/getting-started/installation/
 group :development do
+  # Use Capistrano for deployment
+  # http://capistranorb.com/documentation/getting-started/installation/
   gem 'capistrano-rails', '~> 1.1.1'
+
+  # This gem was added to address an error message provided by ActiveSupport
+  # 5.1.4.
+  gem 'listen'
 end
 
 # Use debugger
