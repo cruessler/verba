@@ -3,4 +3,5 @@
 // It uses Brunch to manage front-end code.
 
 import 'jquery'
+import 'jquery-ujs'
 import 'bootstrap-sass'
