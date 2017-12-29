@@ -14,10 +14,6 @@ gem 'uglifier', '>= 1.3.0'
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 gem 'therubyracer', platforms: :ruby
-# https://github.com/seyhunak/twitter-bootstrap-rails
-# The gem is used for helper methods and generators.
-# The css and js files are managed by bower
-gem 'twitter-bootstrap-rails'
 
 # Use jquery as the JavaScript library (made obsolete by the use of bower)
 # gem 'jquery-rails'
