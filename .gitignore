@@ -25,6 +25,7 @@
 
 # Ignore word lists.
 /words/*
+!/words/example.de.words
 
 # Ignore config files containing non-public information.
 /config/secrets.yml

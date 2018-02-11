@@ -1,0 +1,21 @@
+# vocabulary: Lateinische Vokabeln
+#
+# In der ersten Zeile kann ein Name für den Wortschatz
+# angegeben werden.
+# Dafür muss sie mit »# vocabulary: « beginnen.
+#
+# Alle Zeilen, die mit einer Raute beginnen, werden beim
+# Importieren nicht berücksichtigt.
+#
+# Jede Zeile, die drei Felder (getrennt durch Tabulator)
+# enthält, wird importiert und ggf. dem in der ersten Zeile
+# angegebenen Wortschatz hinzugefügt. Alle anderen Zeilen
+# werden stillschweigend übergangen.
+#
+# Die folgenden Zeilen würden das Wort »ad« und die zwei
+# Wendungen »ad urbem esse« sowie »ad urbem venīre« dem
+# Wortschatz »Lateinische Vokabeln« hinzufügen.
+#
+ad	ad + Akk.	bei; zu, bis
+	ad urbem esse	bei der Stadt sein
+	ad urbem venīre	zur Stadt kommen
