@@ -3,7 +3,16 @@ class Rating < ActiveRecord::Base
   belongs_to :learnable
   
   after_initialize :set_default_values
-  
+
+  # https://www.supermemo.com/english/ol/sm2.htm
+  #
+  # > After each repetition assess the quality of repetition response in 0-5 grade scale:
+  # > 5 - perfect response
+  # > 4 - correct response after a hesitation
+  # > 3 - correct response recalled with serious difficulty
+  # > 2 - incorrect response; where the correct one seemed easy to recall
+  # > 1 - incorrect response; the correct one remembered
+  # > 0 - complete blackout.
   def recalc_e_factor! rating
     if rating < 3
       self.interval = 1
