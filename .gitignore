@@ -23,8 +23,9 @@
 # Ignore all precompiled assets.
 /public/assets/*
 
-# Ignore word lists.
+# Ignore word lists,
 /words/*
+# but include a small sample list.
 !/words/example.de.words
 
 # Ignore config files containing non-public information.
