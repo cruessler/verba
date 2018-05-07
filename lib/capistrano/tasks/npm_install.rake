@@ -3,7 +3,7 @@ namespace :deploy do
   task :install_assets do
     on roles(:all) do
       within release_path do
-        execute :bower, :install, "--no-color"
+        execute :npm, :install
       end
     end
   end
