@@ -9,4 +9,5 @@ namespace :deploy do
   end
 
   before :compile_assets, :install_assets
+  before :compile_assets, :compile_elm
 end

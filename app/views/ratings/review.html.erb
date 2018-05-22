@@ -17,8 +17,6 @@
         ? null
         : csrfTokenNode.content;
 
-    const Elm = require("assets/javascripts/elm.js");
-
     Elm.Question.embed(
       document.getElementById("question"),
       { "csrfToken": csrfToken,

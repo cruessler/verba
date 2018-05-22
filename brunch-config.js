@@ -17,7 +17,7 @@ exports.config = {
     elmBrunch: {
       mainModules:
         ['app/assets/elm/Question.elm'],
-      outputFolder: 'app/assets/javascripts',
+      outputFolder: 'public/assets/javascripts',
       outputFile: 'elm.js'
     }
   },
