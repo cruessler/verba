@@ -13,10 +13,9 @@
     <![endif]-->
 
     <link href='https://fonts.googleapis.com/css?family=Lato:400,300,700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-    <%= stylesheet_link_tag "application", :media => "all" %>
+    <link href="<%= asset_url "assets/app.css", skip_pipeline: true %>" media="all" rel="stylesheet" />
 
-    <script src="<%= asset_url "assets/javascripts/brunch.js", skip_pipeline: true %>"></script>
-    <script src="<%= asset_url "assets/javascripts/elm.js", skip_pipeline: true %>"></script>
+    <script src="<%= asset_url "assets/app.js", skip_pipeline: true %>"></script>
   </head>
   <body>
 

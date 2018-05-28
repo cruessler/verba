@@ -24,8 +24,8 @@ rails verba:files:load
 ## Running a development environment
 
 ```
-# Compiles *.elm files to app/assets/javascript/brunch.js
-brunch watch
+# Compile JavaScript and Elm files to app/assets/javascript/app.js
+npm run watch
 bundle exec rails s
 ```
 

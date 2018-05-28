@@ -5,23 +5,9 @@
       <h1>Lernen</h1>
     </div>
 
-    <div id="question"></div>
+    <div id="question"
+         data-questions="<%= @learnables_serializer.to_json %>"
+         data-status="<%= @status.to_json %>"
+         ></div>
   </div>
 </div>
-
-<script>
-  document.addEventListener("DOMContentLoaded", function(event) {
-    var csrfTokenNode = document.head.querySelector('meta[name="csrf-token"]');
-    var csrfToken =
-      (csrfTokenNode === null || (typeof csrfTokenNode.content !== "string"))
-        ? null
-        : csrfTokenNode.content;
-
-    Elm.Question.embed(
-      document.getElementById("question"),
-      { "csrfToken": csrfToken,
-        "questions": <%= @learnables_serializer.to_json.html_safe %>,
-        "status": <%= @status.to_json.html_safe %>
-      })
-  });
-</script>
