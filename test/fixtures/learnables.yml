@@ -5,9 +5,11 @@ word:
   lemma: ab
   long_lemma: ab, abs, ā + Abl.
   translation: von, von … weg, von … her
+  is_flagged: false
 
 phrase:
   type: Phrase
   lemma: ab
   phrase: ab urbe
   translation: von der Stadt aus, – – – her
+  is_flagged: false

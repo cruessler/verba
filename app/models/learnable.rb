@@ -5,4 +5,8 @@ class Learnable < ActiveRecord::Base
   def rating_for(user)
     ratings.find_or_create_by(user: user)
   end
+
+  def flag
+    self.is_flagged = true
+  end
 end
