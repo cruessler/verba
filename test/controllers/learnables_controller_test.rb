@@ -13,4 +13,18 @@ class LearnablesControllerTest < ActionController::TestCase
 
     assert_select '#dropdown-vocabularies', Regexp.new(assigns(:current_user).current_vocabulary.try(:name))
   end
+
+  test "should flag learnable" do
+    phrase = learnables(:phrase)
+    sign_in users(:one)
+
+    refute phrase.is_flagged
+
+    patch :flag, params: { format: :json, id: phrase }
+
+    json = JSON.parse @response.body
+
+    assert_response :success
+    assert json["is_flagged"]
+  end
 end
