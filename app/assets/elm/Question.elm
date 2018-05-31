@@ -79,6 +79,13 @@ ratingEndpointUrl id =
     "/ratings/" ++ toString id ++ ".json"
 
 
+{-| The URL of the JSON endpoint used for flagging questions.
+-}
+flagEndpointUrl : Int -> String
+flagEndpointUrl id =
+    "/learnables/" ++ toString id ++ "/flag"
+
+
 type alias Flags =
     { csrfToken : Maybe String
     , questions : List Question
@@ -129,6 +136,8 @@ type Msg
     | ShowSolution
     | FetchQuestions (Result Http.Error (List Question))
     | PostRating (Result Http.Error Status)
+    | FlagQuestion
+    | QuestionFlagged (Result Http.Error Question)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -162,6 +171,20 @@ update action model =
             ( { model | status = status }, Cmd.none )
 
         PostRating _ ->
+            ( model, Cmd.none )
+
+        FlagQuestion ->
+            case model.questions of
+                [] ->
+                    model ! [ fetchNewQuestions [] ]
+
+                first :: rest ->
+                    { model | questions = rest }
+                        ! [ fetchNewQuestions model.questions
+                          , flagQuestion first model.csrfToken
+                          ]
+
+        QuestionFlagged _ ->
             ( model, Cmd.none )
 
 
@@ -244,6 +267,34 @@ postRating question rating csrfToken =
             Cmd.none
 
 
+flagQuestion : Question -> Maybe String -> Cmd Msg
+flagQuestion question csrfToken =
+    case csrfToken of
+        Just token ->
+            let
+                url =
+                    flagEndpointUrl question.id
+
+                request =
+                    Http.request
+                        { method = "PATCH"
+                        , headers =
+                            [ Http.header "Content-Type" "application/json"
+                            , Http.header "X-CSRF-Token" token
+                            ]
+                        , url = url
+                        , body = Http.emptyBody
+                        , expect = Http.expectJson decodeQuestion
+                        , timeout = Nothing
+                        , withCredentials = False
+                        }
+            in
+                Http.send QuestionFlagged request
+
+        Nothing ->
+            Cmd.none
+
+
 
 -- SUBSCRIPTIONS
 
@@ -269,6 +320,15 @@ ratingButton rating =
 ratingButtons : List (Html Msg)
 ratingButtons =
     List.map ratingButton (List.reverse allRatings)
+
+
+flagButton : Html Msg
+flagButton =
+    button
+        [ class "btn btn-default pull-right"
+        , onClick FlagQuestion
+        ]
+        [ text "Fehler melden" ]
 
 
 question : Model -> Html Msg
@@ -310,6 +370,9 @@ answer model =
                     , div [ class "row rating" ]
                         [ div [ class "col-md-6" ] [ span [ class "h4" ] [ text "Bewerten" ] ]
                         , div [ class "col-md-6" ] ratingButtons
+                        ]
+                    , div [ class "row rating" ]
+                        [ div [ class "col-md-12" ] [ flagButton ]
                         ]
                     ]
     else
