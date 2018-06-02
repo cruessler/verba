@@ -103,6 +103,7 @@ type alias Question =
     { id : Int
     , question : String
     , answer : List String
+    , flagged : Bool
     }
 
 
@@ -136,7 +137,7 @@ type Msg
     | ShowSolution
     | FetchQuestions (Result Http.Error (List Question))
     | PostRating (Result Http.Error Status)
-    | FlagQuestion
+    | FlagQuestion Int
     | QuestionFlagged (Result Http.Error Question)
 
 
@@ -173,16 +174,30 @@ update action model =
         PostRating _ ->
             ( model, Cmd.none )
 
-        FlagQuestion ->
+        FlagQuestion id ->
             case model.questions of
                 [] ->
                     model ! [ fetchNewQuestions [] ]
 
                 first :: rest ->
-                    { model | questions = rest }
+                    model
                         ! [ fetchNewQuestions model.questions
                           , flagQuestion first model.csrfToken
                           ]
+
+        QuestionFlagged (Ok question) ->
+            let
+                newQuestions =
+                    List.map
+                        (\q ->
+                            if q.id == question.id then
+                                question
+                            else
+                                q
+                        )
+                        model.questions
+            in
+                ( { model | questions = newQuestions }, Cmd.none )
 
         QuestionFlagged _ ->
             ( model, Cmd.none )
@@ -195,10 +210,11 @@ decodeQuestions =
 
 decodeQuestion : Decode.Decoder Question
 decodeQuestion =
-    Decode.map3 Question
+    Decode.map4 Question
         (field "id" Decode.int)
         (field "question" Decode.string)
         (field "answer" (Decode.list Decode.string))
+        (field "flagged" Decode.bool)
 
 
 decodeStatus : Decode.Decoder Status
@@ -322,13 +338,18 @@ ratingButtons =
     List.map ratingButton (List.reverse allRatings)
 
 
-flagButton : Html Msg
-flagButton =
-    button
-        [ class "btn btn-default pull-right"
-        , onClick FlagQuestion
-        ]
-        [ text "Fehler melden" ]
+flagButton : Question -> Html Msg
+flagButton question =
+    if question.flagged then
+        p [ class "pull-right" ]
+            [ small [] [ text "Enthält möglicherweise Fehler" ]
+            ]
+    else
+        button
+            [ class "btn btn-default pull-right"
+            , onClick (FlagQuestion question.id)
+            ]
+            [ text "Fehler melden" ]
 
 
 question : Model -> Html Msg
@@ -372,7 +393,7 @@ answer model =
                         , div [ class "col-md-6" ] ratingButtons
                         ]
                     , div [ class "row rating" ]
-                        [ div [ class "col-md-12" ] [ flagButton ]
+                        [ div [ class "col-md-12" ] [ flagButton first ]
                         ]
                     ]
     else

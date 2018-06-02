@@ -4,5 +4,5 @@ class WordSerializer < ActiveModel::Serializer
   attribute :answer do
     [ object.long_lemma, object.translation ]
   end
-  attribute :is_flagged
+  attribute :is_flagged, key: :flagged
 end

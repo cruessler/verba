@@ -4,5 +4,5 @@ class PhraseSerializer < ActiveModel::Serializer
   attribute :answer do
     [ object.translation ]
   end
-  attribute :is_flagged
+  attribute :is_flagged, key: :flagged
 end
