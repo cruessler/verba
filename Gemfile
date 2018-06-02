@@ -45,6 +45,9 @@ group :development do
   # This gem was added to address an error message provided by ActiveSupport
   # 5.1.4.
   gem 'listen'
+
+  gem 'guard'
+  gem 'guard-minitest'
 end
 
 # Use debugger
