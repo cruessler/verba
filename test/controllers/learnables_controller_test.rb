@@ -25,6 +25,6 @@ class LearnablesControllerTest < ActionController::TestCase
     json = JSON.parse @response.body
 
     assert_response :success
-    assert json["is_flagged"]
+    assert json["flagged"]
   end
 end
