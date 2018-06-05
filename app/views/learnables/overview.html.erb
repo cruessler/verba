@@ -3,8 +3,9 @@
   <h1>Wörter und Wendungen</h1>
 </div>
 
+<% if current_user.current_vocabulary %>
 <h3>
-  Für den Wortschatz <%= current_vocabulary_name %>
+  Für den Wortschatz <%= current_user.current_vocabulary.name %>
 </h3>
 
 <dl>
@@ -15,6 +16,7 @@
   <dt>Anzahl der Wendungen</dt>
   <dd><%= current_phrase_count %></dd>
 </dl>
+<% end %>
 
 <h3>
   Für alle Wortschätze
