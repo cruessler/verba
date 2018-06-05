@@ -27,9 +27,9 @@ class User < ActiveRecord::Base
     def for_review
       Learnable
         .from(
-          "(#{not_yet_rated.to_sql}) " +
-          "UNION SELECT * FROM (#{in_current_vocabulary.scheduled_for_review.order("RANDOM()").to_sql}) " +
-          "UNION SELECT * FROM (#{in_current_vocabulary.with_bad_rating.order("RANDOM()").to_sql}) learnables")
+          "(#{not_yet_rated.to_sql}) AS learnables " +
+          "UNION (SELECT * FROM (#{in_current_vocabulary.scheduled_for_review.order("RANDOM()").to_sql}) AS for_review) " +
+          "UNION (SELECT * FROM (#{in_current_vocabulary.with_bad_rating.order("RANDOM()").to_sql}) AS with_bad_rating)")
         .select("*")
     end
   end
