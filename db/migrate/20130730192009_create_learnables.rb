@@ -1,4 +1,4 @@
-class CreateLearnables < ActiveRecord::Migration
+class CreateLearnables < ActiveRecord::Migration[4.2]
   def change
     create_table :learnables do |t|
       t.string :type
