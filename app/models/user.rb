@@ -21,7 +21,9 @@ class User < ActiveRecord::Base
     end
 
     def not_yet_rated
-      proxy_association.owner.learnables.not_yet_rated
+      proxy_association.owner.learnables
+        .not_yet_rated
+        .from("learnables TABLESAMPLE BERNOULLI(.5)")
     end
 
     def for_review
