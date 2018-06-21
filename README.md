@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/cruessler/verba.svg?branch=master)](https://travis-ci.org/cruessler/verba)
+
 # verba
 
 verba is a simple browser-based vocabulary learning tool.
