@@ -22,7 +22,7 @@
     "jquery": "^3.0.0",
     "jquery-ujs": "^1.2.2",
     "mini-css-extract-plugin": "^0.4.0",
-    "node-sass": "^4.9.0",
+    "node-sass": "^4.13.0",
     "optimize-css-assets-webpack-plugin": "^4.0.0",
     "sass-loader": "^7.0.1",
     "uglifyjs-webpack-plugin": "^1.2.4",
