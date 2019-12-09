@@ -16,7 +16,7 @@
     "babel-preset-env": "^1.6.1",
     "bootstrap-sass": "^3.3.7",
     "copy-webpack-plugin": "^4.5.0",
-    "css-loader": "^0.28.10",
+    "css-loader": "^3.3.0",
     "elm-webpack-loader": "^4.5.0",
     "hoek": "^4.2.1",
     "jquery": "^3.4.1",
