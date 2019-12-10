@@ -13,14 +13,13 @@ initialization and refilled once a configurable threshold is crossed.
 
 -}
 
-import Html exposing (..)
-import Html as Html
-import Html.Attributes exposing (id, class)
+import Html as Html exposing (..)
+import Html.Attributes exposing (class, id)
 import Html.Events exposing (onClick)
-import Task
 import Http
 import Json.Decode as Decode exposing (field)
 import Json.Encode as Encode
+import Task
 
 
 {-| The widget is initialized with Rails’ CSRF token and and an initial list of
@@ -125,7 +124,7 @@ init { csrfToken, questions, status } =
             , csrfToken = csrfToken
             }
     in
-        ( model, Cmd.none )
+    ( model, Cmd.none )
 
 
 
@@ -156,6 +155,7 @@ update action model =
                             ! [ fetchNewQuestions model.questions
                               , postRating first rating model.csrfToken
                               ]
+
             else
                 ( model, Cmd.none )
 
@@ -192,12 +192,13 @@ update action model =
                         (\q ->
                             if q.id == question.id then
                                 question
+
                             else
                                 q
                         )
                         model.questions
             in
-                ( { model | questions = newQuestions }, Cmd.none )
+            ( { model | questions = newQuestions }, Cmd.none )
 
         QuestionFlagged _ ->
             ( model, Cmd.none )
@@ -246,10 +247,11 @@ fetchNewQuestions questions =
         request =
             Http.get url decodeQuestions
     in
-        if queueLength < minimumNumberOfQuestions then
-            Http.send FetchQuestions request
-        else
-            Cmd.none
+    if queueLength < minimumNumberOfQuestions then
+        Http.send FetchQuestions request
+
+    else
+        Cmd.none
 
 
 postRating : Question -> Int -> Maybe String -> Cmd Msg
@@ -277,7 +279,7 @@ postRating question rating csrfToken =
                         , withCredentials = False
                         }
             in
-                Http.send PostRating request
+            Http.send PostRating request
 
         Nothing ->
             Cmd.none
@@ -305,7 +307,7 @@ flagQuestion question csrfToken =
                         , withCredentials = False
                         }
             in
-                Http.send QuestionFlagged request
+            Http.send QuestionFlagged request
 
         Nothing ->
             Cmd.none
@@ -344,6 +346,7 @@ flagButton question =
         p [ class "pull-right" ]
             [ small [] [ text "Enthält möglicherweise Fehler" ]
             ]
+
     else
         button
             [ class "btn btn-default pull-right"
@@ -396,6 +399,7 @@ answer model =
                         [ div [ class "col-md-12" ] [ flagButton first ]
                         ]
                     ]
+
     else
         div [] []
 
