@@ -13,6 +13,7 @@ initialization and refilled once a configurable threshold is crossed.
 
 -}
 
+import Browser
 import Html as Html exposing (..)
 import Html.Attributes exposing (class, id)
 import Html.Events exposing (onClick)
@@ -27,7 +28,7 @@ questions.
 -}
 main : Program Flags Model Msg
 main =
-    Html.programWithFlags
+    Browser.element
         { init = init
         , update = update
         , subscriptions = subscriptions
@@ -75,14 +76,14 @@ ratingsEndpointUrl =
 -}
 ratingEndpointUrl : Int -> String
 ratingEndpointUrl id =
-    "/ratings/" ++ toString id ++ ".json"
+    "/ratings/" ++ String.fromInt id ++ ".json"
 
 
 {-| The URL of the JSON endpoint used for flagging questions.
 -}
 flagEndpointUrl : Int -> String
 flagEndpointUrl id =
-    "/learnables/" ++ toString id ++ "/flag"
+    "/learnables/" ++ String.fromInt id ++ "/flag"
 
 
 type alias Flags =
@@ -115,13 +116,13 @@ type alias Model =
 
 
 init : Flags -> ( Model, Cmd Msg )
-init { csrfToken, questions, status } =
+init flags =
     let
         model =
             { showAnswer = False
-            , status = status
-            , questions = questions
-            , csrfToken = csrfToken
+            , status = flags.status
+            , questions = flags.questions
+            , csrfToken = flags.csrfToken
             }
     in
     ( model, Cmd.none )
@@ -147,14 +148,17 @@ update action model =
             if rating >= 1 && rating <= 6 then
                 case model.questions of
                     [] ->
-                        { model | showAnswer = False, questions = [] }
-                            ! [ fetchNewQuestions [] ]
+                        ( { model | showAnswer = False, questions = [] }
+                        , fetchNewQuestions []
+                        )
 
                     first :: rest ->
-                        { model | showAnswer = False, questions = rest }
-                            ! [ fetchNewQuestions model.questions
-                              , postRating first rating model.csrfToken
-                              ]
+                        ( { model | showAnswer = False, questions = rest }
+                        , Cmd.batch
+                            [ fetchNewQuestions model.questions
+                            , postRating first rating model.csrfToken
+                            ]
+                        )
 
             else
                 ( model, Cmd.none )
@@ -168,8 +172,8 @@ update action model =
         FetchQuestions _ ->
             ( model, Cmd.none )
 
-        PostRating (Ok status) ->
-            ( { model | status = status }, Cmd.none )
+        PostRating (Ok status_) ->
+            ( { model | status = status_ }, Cmd.none )
 
         PostRating _ ->
             ( model, Cmd.none )
@@ -177,21 +181,25 @@ update action model =
         FlagQuestion id ->
             case model.questions of
                 [] ->
-                    model ! [ fetchNewQuestions [] ]
+                    ( model
+                    , fetchNewQuestions []
+                    )
 
                 first :: rest ->
-                    model
-                        ! [ fetchNewQuestions model.questions
-                          , flagQuestion first model.csrfToken
-                          ]
+                    ( model
+                    , Cmd.batch
+                        [ fetchNewQuestions model.questions
+                        , flagQuestion first model.csrfToken
+                        ]
+                    )
 
-        QuestionFlagged (Ok question) ->
+        QuestionFlagged (Ok question_) ->
             let
                 newQuestions =
                     List.map
                         (\q ->
-                            if q.id == question.id then
-                                question
+                            if q.id == question_.id then
+                                question_
 
                             else
                                 q
@@ -232,8 +240,8 @@ fetchNewQuestions questions =
             List.length questions
 
         queryParams =
-            [ ( "number", toString numberOfQuestionsToFetch )
-            , ( "offset", toString queueLength )
+            [ ( "number", String.fromInt numberOfQuestionsToFetch )
+            , ( "offset", String.fromInt queueLength )
             ]
 
         queryString =
@@ -245,69 +253,66 @@ fetchNewQuestions questions =
             ratingsEndpointUrl ++ "?" ++ queryString
 
         request =
-            Http.get url decodeQuestions
+            Http.get
+                { url = url
+                , expect = Http.expectJson FetchQuestions decodeQuestions
+                }
     in
     if queueLength < minimumNumberOfQuestions then
-        Http.send FetchQuestions request
+        request
 
     else
         Cmd.none
 
 
 postRating : Question -> Int -> Maybe String -> Cmd Msg
-postRating question rating csrfToken =
+postRating question_ rating csrfToken =
     case csrfToken of
         Just token ->
             let
                 url =
-                    ratingEndpointUrl question.id
+                    ratingEndpointUrl question_.id
 
                 params =
                     Encode.object [ ( "rating", Encode.int rating ) ]
-
-                request =
-                    Http.request
-                        { method = "PUT"
-                        , headers =
-                            [ Http.header "Content-Type" "application/json"
-                            , Http.header "X-CSRF-Token" token
-                            ]
-                        , url = url
-                        , body = Http.jsonBody params
-                        , expect = Http.expectJson decodeStatus
-                        , timeout = Nothing
-                        , withCredentials = False
-                        }
             in
-            Http.send PostRating request
+            Http.request
+                { method = "PUT"
+                , headers =
+                    [ Http.header "Content-Type" "application/json"
+                    , Http.header "X-CSRF-Token" token
+                    ]
+                , url = url
+                , body = Http.jsonBody params
+                , expect = Http.expectJson PostRating decodeStatus
+                , timeout = Nothing
+                , tracker = Nothing
+                }
 
         Nothing ->
             Cmd.none
 
 
 flagQuestion : Question -> Maybe String -> Cmd Msg
-flagQuestion question csrfToken =
+flagQuestion question_ csrfToken =
     case csrfToken of
         Just token ->
             let
                 url =
-                    flagEndpointUrl question.id
-
-                request =
-                    Http.request
-                        { method = "PATCH"
-                        , headers =
-                            [ Http.header "Content-Type" "application/json"
-                            , Http.header "X-CSRF-Token" token
-                            ]
-                        , url = url
-                        , body = Http.emptyBody
-                        , expect = Http.expectJson decodeQuestion
-                        , timeout = Nothing
-                        , withCredentials = False
-                        }
+                    flagEndpointUrl question_.id
             in
-            Http.send QuestionFlagged request
+            Http.request
+                { method = "PATCH"
+                , headers =
+                    [ Http.header "Content-Type" "application/json"
+                    , Http.header "X-CSRF-Token" token
+                    ]
+                , url = url
+                , body = Http.emptyBody
+                , expect = Http.expectJson QuestionFlagged decodeQuestion
+                , timeout = Nothing
+                , tracker = Nothing
+                }
 
         Nothing ->
             Cmd.none
@@ -332,7 +337,7 @@ ratingButton rating =
         [ class "btn btn-default rate-link pull-right"
         , onClick (RateAnswer rating)
         ]
-        [ text (toString rating) ]
+        [ text (String.fromInt rating) ]
 
 
 ratingButtons : List (Html Msg)
@@ -341,8 +346,8 @@ ratingButtons =
 
 
 flagButton : Question -> Html Msg
-flagButton question =
-    if question.flagged then
+flagButton question_ =
+    if question_.flagged then
         p [ class "pull-right" ]
             [ small [] [ text "Enthält möglicherweise Fehler" ]
             ]
@@ -350,7 +355,7 @@ flagButton question =
     else
         button
             [ class "btn btn-default pull-right"
-            , onClick (FlagQuestion question.id)
+            , onClick (FlagQuestion question_.id)
             ]
             [ text "Fehler melden" ]
 
@@ -405,12 +410,12 @@ answer model =
 
 
 status : Model -> Html Msg
-status { status } =
+status model =
     dl [ class "question-info" ]
         [ dt [] [ text "Fragen verbleibend" ]
-        , dd [] [ text (toString status.questionsLeftForToday) ]
+        , dd [] [ text (String.fromInt model.status.questionsLeftForToday) ]
         , dt [] [ text "Mit Bewertung < 4" ]
-        , dd [] [ text (toString status.questionsWithBadRating) ]
+        , dd [] [ text (String.fromInt model.status.questionsWithBadRating) ]
         ]
 
 
