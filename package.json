@@ -17,6 +17,7 @@
     "bootstrap-sass": "^3.4.1",
     "copy-webpack-plugin": "^4.5.0",
     "css-loader": "^3.3.0",
+    "elm": "^0.18.0",
     "elm-webpack-loader": "^4.5.0",
     "hoek": "^4.2.1",
     "jquery": "^3.4.1",
