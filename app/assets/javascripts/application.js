@@ -10,7 +10,7 @@ import css from '../stylesheets/application.scss'
 import 'jquery-ujs'
 import '../../../node_modules/bootstrap-sass/assets/javascripts/bootstrap'
 
-import Elm from '../elm/Question.elm'
+import { Elm } from '../elm/Question.elm'
 
 document.addEventListener("DOMContentLoaded", function(event) {
   var csrfTokenNode = document.head.querySelector('meta[name="csrf-token"]');
@@ -19,14 +19,16 @@ document.addEventListener("DOMContentLoaded", function(event) {
     ? null
     : csrfTokenNode.content;
 
-  const div = document.getElementById("question");
+  const node = document.getElementById("question");
 
-  if (div !== null) {
-    Elm.Question.embed(
-      div,
-      { "csrfToken": csrfToken,
-        "questions": JSON.parse(div.dataset.questions),
-        "status": JSON.parse(div.dataset.status)
-      })
+  if (node !== null) {
+    Elm.Question.init({
+      node,
+      flags: {
+        csrfToken: csrfToken,
+        questions: JSON.parse(node.dataset.questions),
+        status: JSON.parse(node.dataset.status)
+      }
+    });
   }
 });
