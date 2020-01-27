@@ -27,11 +27,18 @@ class User < ActiveRecord::Base
     end
 
     def for_review
+      random_order = Arel.sql("RANDOM()")
+
+      randomized_scheduled =
+        in_current_vocabulary.scheduled_for_review.order(random_order)
+      randomized_with_bad_rating =
+        in_current_vocabulary.with_bad_rating.order(random_order)
+
       Learnable
         .from(
           "(#{not_yet_rated.to_sql}) AS learnables " +
-          "UNION (SELECT * FROM (#{in_current_vocabulary.scheduled_for_review.order("RANDOM()").to_sql}) AS for_review) " +
-          "UNION (SELECT * FROM (#{in_current_vocabulary.with_bad_rating.order("RANDOM()").to_sql}) AS with_bad_rating)")
+          "UNION (SELECT * FROM (#{randomized_scheduled.to_sql}) AS for_review) " +
+          "UNION (SELECT * FROM (#{randomized_with_bad_rating.to_sql}) AS with_bad_rating)")
         .select("*")
     end
   end
