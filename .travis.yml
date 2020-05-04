@@ -1,6 +1,8 @@
 matrix:
   include:
     - language: ruby
+      rvm:
+        - 2.6
       cache: bundler
       services:
         - postgresql
