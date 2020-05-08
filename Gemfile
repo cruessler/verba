@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 gem 'rails', '>= 5.2', '< 5.3'
 
 # Use PostgreSQL as the database for Active Record
-gem 'pg', '~> 0.18'
+gem 'pg', '~> 1.2'
 
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 # gem 'turbolinks'
