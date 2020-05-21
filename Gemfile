@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '>= 5.2', '< 5.3'
+gem 'rails', '>= 5.2', '< 6.1'
 
 # Use PostgreSQL as the database for Active Record
 gem 'pg', '~> 1.2'
@@ -44,7 +44,7 @@ end
 # gem 'debugger', group: [:development, :test]
 
 # https://github.com/svenfuchs/rails-i18n
-gem 'rails-i18n', '~> 5.1.3' # For 4.0.x
+gem 'rails-i18n', '~> 6.0.0' # For 4.0.x
 
 # https://github.com/plataformatec/simple_form
 gem 'simple_form', '~> 5.0'
