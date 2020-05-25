@@ -9,13 +9,13 @@ module.exports = (env, options) => ({
   optimization: {
     minimizer: [
       new TerserPlugin({ cache: true, parallel: true, sourceMap: false }),
-      new OptimizeCSSAssetsPlugin({})
-    ]
+      new OptimizeCSSAssetsPlugin({}),
+    ],
   },
   entry: './app/assets/javascripts/application.js',
   output: {
     filename: 'app.js',
-    path: path.resolve(__dirname, 'public/assets/')
+    path: path.resolve(__dirname, 'public/assets/'),
   },
   module: {
     rules: [
@@ -23,46 +23,46 @@ module.exports = (env, options) => ({
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
-          loader: 'babel-loader'
-        }
+          loader: 'babel-loader',
+        },
       },
       {
         test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader']
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
       {
         test: /\.scss$/,
         use: [
-          MiniCssExtractPlugin.loader, 'css-loader',
-          { loader: 'sass-loader',
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          {
+            loader: 'sass-loader',
             options: {
-              includePaths: [
-                'node_modules/bootstrap-sass/assets/stylesheets/'
-              ]
-            }
-          }
-        ]
+              includePaths: ['node_modules/bootstrap-sass/assets/stylesheets/'],
+            },
+          },
+        ],
       },
       {
         test: /\.elm$/,
         exclude: [/elm-stuff/],
-        loader: 'elm-webpack-loader'
+        loader: 'elm-webpack-loader',
       },
       {
         test: /\.woff2?$|\.ttf$|\.eot$|\.svg$/,
         use: {
-          loader: 'url-loader'
-        }
-      }
+          loader: 'url-loader',
+        },
+      },
     ],
-    noParse: [/\.elm$/]
+    noParse: [/\.elm$/],
   },
   plugins: [
     new MiniCssExtractPlugin({ filename: 'app.css' }),
     new CopyWebpackPlugin([{ from: 'app/assets/images', to: '' }]),
     new webpack.ProvidePlugin({
       $: 'jquery',
-      jQuery: 'jquery'
-    })
-  ]
+      jQuery: 'jquery',
+    }),
+  ],
 });

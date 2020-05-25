@@ -8,13 +8,18 @@
   padding-bottom: $line-height-computed * 0.5;
   font-size: $font-size-base * 1.5;
   line-height: $line-height-computed * 1.5;
-  border-top: 1px solid #EEE;
+  border-top: 1px solid #eee;
 
   animation: 0.4s ease-in 0s fade-in;
 }
 
 @keyframes fade-in {
-  from { opacity: 0 } to { opacity: 1 }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .rating {
@@ -24,7 +29,7 @@
 .question-info {
   margin-top: $line-height-computed * 1.5;
   padding-top: $line-height-computed * 0.75;
-  border-top: 1px solid #EEE;
+  border-top: 1px solid #eee;
 }
 
 .rate-link {

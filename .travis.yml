@@ -27,3 +27,4 @@ matrix:
       script:
         - npm run build
         - npx elm-format --validate app
+        - npx prettier --check "app/assets/**/*.{js,jsx,scss}" "*.js"

@@ -1,17 +1,18 @@
-$font-family-sans-serif: 'Lato', 'DejaVu Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+$font-family-sans-serif: 'Lato', 'DejaVu Sans', 'Helvetica Neue', Helvetica,
+  Arial, sans-serif;
 
 $headings-font-weight: normal;
 
 // This needs to be set so that bootstrap can find its icon fonts.
 $icon-font-path: '/node_modules/bootstrap-sass/assets/fonts/';
 
-@import "bootstrap";
+@import 'bootstrap';
 
-@import "devise";
+@import 'devise';
 
-@import "learnables";
-@import "ratings";
-@import "words";
+@import 'learnables';
+@import 'ratings';
+@import 'words';
 
 .navbar-brand {
   font-weight: 300;
