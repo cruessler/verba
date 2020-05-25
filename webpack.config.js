@@ -38,7 +38,11 @@ module.exports = (env, options) => ({
           {
             loader: 'sass-loader',
             options: {
-              includePaths: ['node_modules/bootstrap-sass/assets/stylesheets/'],
+              sassOptions: {
+                includePaths: [
+                  'node_modules/bootstrap-sass/assets/stylesheets/',
+                ],
+              },
             },
           },
         ],
