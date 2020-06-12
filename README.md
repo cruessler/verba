@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/cruessler/verba.svg?branch=master)](https://travis-ci.org/cruessler/verba)
+[![Build Status](https://github.com/cruessler/verba/workflows/build/badge.svg)](https://github.com/cruessler/verba/actions?query=workflow%3Abuild)
 
 # verba
 

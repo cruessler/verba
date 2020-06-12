@@ -1,0 +1,6 @@
+test:
+  adapter: postgresql
+  database: verba_test
+  user: verba_test
+  password: verba_test
+  host: localhost
