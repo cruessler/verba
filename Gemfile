@@ -30,7 +30,7 @@ gem "bootsnap", ">= 1.1.0", require: false
 group :development do
   # Use Capistrano for deployment
   # http://capistranorb.com/documentation/getting-started/installation/
-  gem 'capistrano-rails', '~> 1.5.0'
+  gem 'capistrano-rails', '~> 1.6.1'
 
   # This gem was added to address an error message provided by ActiveSupport
   # 5.1.4.
