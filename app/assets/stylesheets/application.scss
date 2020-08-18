@@ -4,7 +4,7 @@ $font-family-sans-serif: 'Lato', 'DejaVu Sans', 'Helvetica Neue', Helvetica,
 $headings-font-weight: normal;
 
 // This needs to be set so that bootstrap can find its icon fonts.
-$icon-font-path: '/node_modules/bootstrap-sass/assets/fonts/';
+$icon-font-path: '../../../node_modules/bootstrap-sass/assets/fonts/bootstrap/';
 
 @import 'bootstrap';
 
