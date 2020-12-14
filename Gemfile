@@ -59,7 +59,7 @@ gem 'devise', '~> 4.7'
 # Used for l18n of devise
 gem 'devise-i18n'
 
-gem 'active_model_serializers', '~> 0.10.11'
+gem 'active_model_serializers', '~> 0.10.12'
 
 # Rails 5.0 has removed `assigns` in controllers test and extracted the
 # functionality to a gem.
