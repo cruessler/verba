@@ -38,6 +38,8 @@ jobs:
             node: 10.x
           - ruby: 2.7
             node: 12.x
+          - ruby: 3.0
+            node: 14.x
 
     name: Build and test [Ruby ${{ matrix.ruby }}, Node.js ${{ matrix.node }}]
     steps:
