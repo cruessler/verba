@@ -9,11 +9,12 @@
     "build": "webpack --mode production",
     "watch": "webpack --mode development --watch"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
+    "babel-loader": "^8.2.2"
+  },
   "devDependencies": {
-    "babel-core": "^6.26.3",
-    "babel-loader": "^8.2.2",
-    "babel-preset-env": "^1.6.1",
     "bootstrap-sass": "^3.4.1",
     "copy-webpack-plugin": "^6.4.1",
     "css-loader": "^5.0.1",
