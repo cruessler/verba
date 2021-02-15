@@ -47,7 +47,7 @@ end
 gem 'rails-i18n', '~> 6.0.0'
 
 # https://github.com/plataformatec/simple_form
-gem 'simple_form', '~> 5.0'
+gem 'simple_form', '~> 5.1'
 
 # https://github.com/plataformatec/devise
 # http://railscasts.com/episodes/209-introducing-devise
