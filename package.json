@@ -17,7 +17,7 @@
   "devDependencies": {
     "bootstrap-sass": "^3.4.1",
     "copy-webpack-plugin": "^6.4.1",
-    "css-loader": "^5.0.1",
+    "css-loader": "^5.0.2",
     "elm": "^0.19.1-5",
     "elm-format": "^0.8.5",
     "elm-webpack-loader": "^7.0.1",
